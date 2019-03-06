@@ -1,4 +1,4 @@
-#ifndef __VECTOR_HEADER__
+ #ifndef __VECTOR_HEADER__
 #define __VECTOR_HEADER__
 
 // Stupid FLTK includes iostream.h, so I can't include the official 

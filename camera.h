@@ -14,21 +14,21 @@ class Camera {
     
 protected:
     
-    float		mElevation;
-    float		mAzimuth;
-    float		mDolly;
-    float		mTwist; // Not implemented yet
+    float			mElevation;
+    float			mAzimuth;
+    float			mDolly;
+    float			mTwist; // Not implemented yet
     
     Vec3f		mLookAt;
     
     Vec3f		mPosition;
     Vec3f		mUpVector;
-    bool		mDirtyTransform;
+    bool			mDirtyTransform;
     
     void calculateViewingTransformParameters();
     
     Vec3f			mLastMousePosition;
-    MouseAction_t	mCurrentMouseAction;
+    MouseAction_t	 mCurrentMouseAction;
     
     
 public:

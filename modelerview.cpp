@@ -7,9 +7,9 @@
 #include <GL/glu.h>
 #include <cstdio>
 
-static const int	kMouseRotationButton			= FL_LEFT_MOUSE;
-static const int	kMouseTranslationButton			= FL_MIDDLE_MOUSE;
-static const int	kMouseZoomButton				= FL_RIGHT_MOUSE;
+static const int 	kMouseRotationButton			  	= FL_LEFT_MOUSE;
+static const int	 	kMouseTranslationButton			= FL_MIDDLE_MOUSE;
+static const int		kMouseZoomButton					= FL_RIGHT_MOUSE;
 
 ModelerView::ModelerView(int x, int y, int w, int h, char *label)
 : Fl_Gl_Window(x,y,w,h,label)

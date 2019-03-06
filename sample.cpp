@@ -53,18 +53,51 @@ void SampleModel::draw()
 		drawBox(1,1,1);
 		glPopMatrix();
 
-		// draw cannon
+		// draw arms
 		glPushMatrix();
 		glRotated(VAL(ROTATE), 0.0, 1.0, 0.0);
 		glRotated(-90, 1.0, 0.0, 0.0);
-		drawCylinder(VAL(HEIGHT), 0.1, 0.1);
+		drawCylinder(4+VAL(HEIGHT), 0.1, 0.1);
 
-		glTranslated(0.0, 0.0, VAL(HEIGHT));
-		drawCylinder(1, 1.0, 0.9);
+		glTranslated(0.0, 0.0, 4+VAL(HEIGHT));
+		
+		drawCylinder(1, 5, 0.5);
+		glTranslated(0,0,2);
+		drawSphere(1);
 
-		glTranslated(0.0, 0.0, 0.5);
-		glRotated(90, 1.0, 0.0, 0.0);
-		drawCylinder(4, 0.1, 0.2);
+		glTranslated(0.0, 3.5, -5);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(3.5, -3.5, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(-7, 0, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(3.5, -3.5, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(2.47487, 1.02513, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(-4.94974, 0, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(0, 4.94974, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+		glTranslated(4.94974, 0, 0);
+		drawCylinder(3, 0.1, 0.2);
+		drawSphere(0.5);
+
+
 		glPopMatrix();
 
 	glPopMatrix();
