@@ -60,43 +60,120 @@ void SampleModel::draw()
 		drawCylinder(5+VAL(HEIGHT), 0.1, 0.1);
 
 		glTranslated(0.0, 0.0, 5+VAL(HEIGHT));
-		
+		// draw hat
 		drawCylinder(1, 5, 0.1);
 		glTranslated(0,0,2);
 		drawSphere(1);
-
+		//draw 8 arms
 		glTranslated(0.0, 3.5, -5-sin(VAL(ROTATE)*M_PI/180));
 		drawCylinder(3+sin(VAL(ROTATE)*M_PI/180), 0.1, 0.2); //sin(VAL(ROTATE)*M_PI/180);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(0.2, 1, 1);
+			drawBox(1, 0.1, 0.4);
+			glTranslated(0, 1, 0);
+			drawBox(1, 0.1, 0.4);
+			glPopMatrix();
+
 
 		glTranslated(3.5, -3.5, sin(VAL(ROTATE)*M_PI/180) - sin((VAL(ROTATE)+90)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)+90)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(0.1, 1, 0.4);
+			glTranslated(0, 1, 0);
+			drawBox(0.9, 0.1, 1);
+			glTranslated(1, 0, 0);
+			drawBox(0.1, -1, 0.4);
+			glPopMatrix();
 
 		glTranslated(-7, 0, sin((VAL(ROTATE)+90)*M_PI/180) - sin((VAL(ROTATE)-90)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)-90)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(1, 0.2, 1);
+			drawBox(0.1, 1, 0.4);
+			glTranslated(1, 0, 0);
+			drawBox(0.1, 1, 0.4);
+			glPopMatrix();
 
 		glTranslated(3.5, -3.5, sin((VAL(ROTATE)-90)*M_PI/180) - sin((VAL(ROTATE)+180)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)+180)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(1, 0.1, 0.4);
+			glTranslated(1, 1, 0);
+			drawBox(-1, -0.1, 0.4);
+			drawBox(-0.2, -1, 1);
+			glPopMatrix();
 
 		glTranslated(2.47487, 1.02513, sin((VAL(ROTATE)+180)*M_PI/180) - sin((VAL(ROTATE)+135)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)+135)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glRotated(135, 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(1, 0.2, 1);
+			drawBox(0.1, 1, 0.4);
+			glTranslated(1, 0, 0);
+			drawBox(0.1, 1, 0.4);
+			glPopMatrix();
 
 		glTranslated(-4.94974, 0, sin((VAL(ROTATE)+135)*M_PI/180) - sin((VAL(ROTATE)-135)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)-135)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glRotated(45, 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(1, 0.2, 1);
+			drawBox(0.1, 1, 0.4);
+			glTranslated(1, 0, 0);
+			drawBox(0.1, 1, 0.4);
+			glPopMatrix();
 
 		glTranslated(0, 4.94974, sin((VAL(ROTATE)-135)*M_PI/180) - sin((VAL(ROTATE)-45)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)-45)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glRotated(-45, 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(1, 0.2, 1);
+			drawBox(0.1, 1, 0.4);
+			glTranslated(1, 0, 0);
+			drawBox(0.1, 1, 0.4);
+			glPopMatrix();
 
 		glTranslated(4.94974, 0, sin((VAL(ROTATE)-45)*M_PI/180) - sin((VAL(ROTATE)+45)*M_PI/180));
 		drawCylinder(3+sin((VAL(ROTATE)+45)*M_PI/180), 0.1, 0.2);
-		drawSphere(0.5);
-
+		// drawSphere(0.5);
+			glPushMatrix();
+			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
+			glRotated(-135, 0, 0, 1);
+			glTranslated(-0.5, -0.5, -0.2);
+			drawBox(1, 1, 0.2);
+			drawBox(1, 0.2, 1);
+			drawBox(0.1, 1, 0.4);
+			glTranslated(1, 0, 0);
+			drawBox(0.1, 1, 0.4);
+			glPopMatrix();
 
 		glPopMatrix();
 
