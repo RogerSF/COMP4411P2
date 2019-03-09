@@ -19,15 +19,14 @@ protected:
     float			mDolly;
     float			mTwist; // Not implemented yet
     
-    Vec3f		mLookAt;
-    
     Vec3f		mPosition;
+    Vec3f		mLookAt;
     Vec3f		mUpVector;
     bool			mDirtyTransform;
     
     void calculateViewingTransformParameters();
     
-    Vec3f			mLastMousePosition;
+    Vec3f		mLastMousePosition;
     MouseAction_t	 mCurrentMouseAction;
     
     
@@ -44,28 +43,37 @@ public:
     { 
         // don't want elevation to be negative
         if (elevation<0) elevation+=6.28318530717f;
-        mElevation = elevation; mDirtyTransform = true; 
+        mElevation = elevation; 
+        mDirtyTransform = true; 
     }
     inline float getElevation() const
     { return mElevation; }
     
     inline void setAzimuth( float azimuth )
-    { mAzimuth = azimuth; mDirtyTransform = true; }
+    { mAzimuth = azimuth; 
+    	mDirtyTransform = true; }
+
     inline float getAzimuth() const
     { return mAzimuth; }
     
     inline void setDolly( float dolly )
-    { mDolly = dolly; mDirtyTransform = true; }
+    { 	mDolly = dolly; 
+    	mDirtyTransform = true; }
+
     inline float getDolly() const
     { return mDolly; }
     
     inline void setTwist( float twist )
-    { mTwist = twist; mDirtyTransform = true; }
+    { mTwist = twist; 
+    	mDirtyTransform = true; }
+
     inline float getTwist() const
     { return mTwist; }
     
     inline void setLookAt( const Vec3f &lookAt )
-    { mLookAt = lookAt; mDirtyTransform = true;}
+    { 	mLookAt = lookAt; 
+    	mDirtyTransform = true;}
+    	
     inline Vec3f getLookAt() const
     { return mLookAt; }
     
