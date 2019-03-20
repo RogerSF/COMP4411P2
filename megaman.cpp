@@ -10,6 +10,7 @@
 // Colors
 #define MEGAMAN_LIGHT_BLUE 0.455f, 0.7255f, 0.855f
 #define MEGAMAN_DARK_BLUE 0.3098f, 0.4902f, 0.8275f
+#define MEGAMAN_RED 1.0f, 0.0f, 0.0f
 
 // To make a MegamanModel, we inherit off of ModelerView
 class MegamanModel : public ModelerView 
@@ -95,12 +96,26 @@ void MegamanModel::draw()
 				glPushMatrix();
 				glTranslated(0, 0, 3);
 				glRotated(VAL(LEFT_FOREARM_FLEX), 0, -1, 0);
-				drawCylinder(3, 1.2, 1.2);
+				drawCylinder(2.5, 1.2, 1.5);
 
 					// MEGAMAN: LEFT HAND CANNON
 					glPushMatrix();
-					glTranslated(0, 0, 3);
-					drawSphere(1);
+					glTranslated(0, 0, 2.4);
+					drawCylinder(1, 1.4, 0.9);
+				
+						glPushMatrix();
+						glTranslated(0, 0, 0.5);
+						drawCylinder(1, 0.9, 0.5);
+
+							setDiffuseColor(MEGAMAN_RED);
+							glPushMatrix();
+							glTranslated(0, 0, 0.5);
+							drawCylinder(0.55, 0.4, 0.4);
+							glPopMatrix();
+
+						glPopMatrix();
+
+					glPopMatrix();
 
 				glPopMatrix();
 
