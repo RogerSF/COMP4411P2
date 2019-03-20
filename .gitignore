@@ -379,5 +379,6 @@ healthchecksdb
 
 # Debug folder
 Debug/
+*.vcsproj.user
 
 # End of https://www.gitignore.io/api/c++,visualstudio

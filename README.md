@@ -31,7 +31,7 @@ One bell is worth two whistles.
 
 - [ ] :bell: Build a complex shape as a set of polygonal faces, using the "triangle" primitive to render them.
 
-- [ ] :bell: Make an additional "animated" sequence your character can perform.  Although you can try to use a timed callback "add_idle" (see here for more information), an easier solution is just to increment values each time your model's draw() function is called. If you use the menu option to turn on animation, your draw() function will be executed at around 30 times per second.
+- [X] :bell: Make an additional "animated" sequence your character can perform.  Although you can try to use a timed callback "add_idle" (see here for more information), an easier solution is just to increment values each time your model's draw() function is called. If you use the menu option to turn on animation, your draw() function will be executed at around 30 times per second.
 
 - [ ] :bell::notes: Add some widgets that control adjustable parameters to your model so that you can create individual-looking instances of your character.  Try to make these actually different individuals, not just "the red guy" and "the blue guy."
 
