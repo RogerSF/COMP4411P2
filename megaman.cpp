@@ -64,18 +64,46 @@ void MegamanModel::draw()
 			glRotated(VAL(RIGHT_ARM_FLEX), 0, 1, 0);
 			drawCylinder(3, 1, 1);
 
+				// MEGAMAN: RIGHT FORE ARM
 				setDiffuseColor(MEGAMAN_DARK_BLUE);
 				glPushMatrix();
 				glTranslated(0, 0, 3);
 				glRotated(VAL(RIGHT_FOREARM_FLEX), 0, 1, 0);
 				drawCylinder(3, 1.2, 1.2);
 
+					// MEGAMAN: RIGHT HAND
 					glPushMatrix();
 					glTranslated(0, 0, 3);
 					drawSphere(1);
-					
+					glPopMatrix();
+
 				glPopMatrix();
 				
+			glPopMatrix();
+
+			// MEGAMAN: LEFT UPPER ARM
+			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+			glPushMatrix();
+			glTranslated(2, 1.5, 0);
+			glRotated(VAL(LEFT_ARM_UP), 0, 0, -1);
+			glRotated(90, 0, 1, 0);
+			glRotated(VAL(LEFT_ARM_FLEX), 0, -1, 0);
+			drawCylinder(3, 1, 1);
+
+				// MEGAMAN: LEFT FORE ARM
+				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				glPushMatrix();
+				glTranslated(0, 0, 3);
+				glRotated(VAL(LEFT_FOREARM_FLEX), 0, -1, 0);
+				drawCylinder(3, 1.2, 1.2);
+
+					// MEGAMAN: LEFT HAND CANNON
+					glPushMatrix();
+					glTranslated(0, 0, 3);
+					drawSphere(1);
+
+				glPopMatrix();
+
 			glPopMatrix();
 
 
@@ -241,7 +269,10 @@ int main()
 	controls[LIGHT_Z] = ModelerControl("Light PosZ", 0, 10, 0.1f, 0);
 	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", 0, 90, 1, 0);
 	controls[RIGHT_ARM_UP] = ModelerControl("Right Arm Up", 0, 90, 1, 0);
-	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Form Arm Flex", 0, 90, 1, 0);
+	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Fore Arm Flex", 0, 90, 1, 0);
+	controls[LEFT_ARM_FLEX] = ModelerControl("Left Arm Flex", 0, 90, 1, 0);
+	controls[LEFT_ARM_UP] = ModelerControl("Left Arm Up", 0, 90, 1, 0);
+	controls[LEFT_FOREARM_FLEX] = ModelerControl("Left Fore Arm Flex", 0, 90, 1, 0);
 
     ModelerApplication::Instance()->Init(&createMegamanModel, controls, NUMCONTROLS);
     return ModelerApplication::Instance()->Run();
