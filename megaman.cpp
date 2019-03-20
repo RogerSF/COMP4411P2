@@ -54,15 +54,14 @@ void MegamanModel::draw()
 		glPushMatrix();
 		glTranslated(-2, -2.5, -1.25);
 		drawBox(4, 5, 2.5);
-		glPopMatrix();
 		
 			// MEGAMAN: RIGHT UPPER ARM
 			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
 			glPushMatrix();
-			glTranslated(-2, 1.5, 0);
-			glRotated(VAL(RIGHT_ARM_UP), 0, 0, 1);
+			glTranslated(0, 4, 1.25);
 			glRotated(-90, 0, 1, 0);
 			glRotated(VAL(RIGHT_ARM_FLEX), 0, 1, 0);
+			glRotated(VAL(RIGHT_ARM_SIDE_FLEX), 0, 0, 1);
 			drawCylinder(3, 1, 1);
 
 				// MEGAMAN: RIGHT FORE ARM
@@ -85,10 +84,10 @@ void MegamanModel::draw()
 			// MEGAMAN: LEFT UPPER ARM
 			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
 			glPushMatrix();
-			glTranslated(2, 1.5, 0);
-			glRotated(VAL(LEFT_ARM_UP), 0, 0, -1);
+			glTranslated(4, 4, 1.25);
 			glRotated(90, 0, 1, 0);
 			glRotated(VAL(LEFT_ARM_FLEX), 0, -1, 0);
+			glRotated(VAL(LEFT_ARM_SIDE_FLEX), 0, 0, -1);
 			drawCylinder(3, 1, 1);
 
 				// MEGAMAN: LEFT FORE ARM
@@ -121,127 +120,67 @@ void MegamanModel::draw()
 
 			glPopMatrix();
 
-
-		// draw central column
-		glPushMatrix();
-		glRotated(VAL(ROTATE), 0.0, 1.0, 0.0);
-		glRotated(-90, 1.0, 0.0, 0.0);
-		drawCylinder(5+VAL(HEIGHT), 0.1, 0.1);
-
-		glTranslated(0.0, 0.0, 5+VAL(HEIGHT));
-		// draw hat
-		drawCylinder(1, 5, 0.1);
-		glTranslated(0,0,2);
-		drawSphere(1);
-		//draw 8 arms
-		glTranslated(0.0, 3.5, -5-sin(VAL(ROTATE)*M_PI/180));
-		drawCylinder(3+sin(VAL(ROTATE)*M_PI/180), 0.1, 0.2); //sin(VAL(ROTATE)*M_PI/180);
-		// drawSphere(0.5);
+			// MEGAMAN: PANTS
+			setDiffuseColor(MEGAMAN_DARK_BLUE);
 			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(0.2, 1, 1);
-			drawBox(1, 0.1, 0.4);
-			glTranslated(0, 1, 0);
-			drawBox(1, 0.1, 0.4);
+			glTranslated(-0.25, -1, -0.25);
+			drawBox(4.5, 2, 3);
 			glPopMatrix();
 
-
-		glTranslated(3.5, -3.5, sin(VAL(ROTATE)*M_PI/180) - sin((VAL(ROTATE)+90)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)+90)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
+			// MEGAMAN: RIGHT LEG
+			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
 			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(0.1, 1, 0.4);
-			glTranslated(0, 1, 0);
-			drawBox(0.9, 0.1, 1);
-			glTranslated(1, 0, 0);
-			drawBox(0.1, -1, 0.4);
+			glTranslated(0.8, -0.5, 1.25);
+			glRotated(90, 1, 0, 0);
+			glRotated(VAL(RIGHT_LEG_FLEX), -1, 0, 0);
+			glRotated(VAL(RIGHT_LEG_SIDE_FLEX), 0, -1, 0);
+			drawCylinder(2.5, 1, 1);
+
+				// MEGAMAN: RIGHT LOWER LEG
+				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				glPushMatrix();
+				glTranslated(0, 0, 2.5);
+				glRotated(VAL(RIGHT_LOWER_LEG_FLEX), 1, 0, 0);
+				drawCylinder(3, 1.2, 1.5);
+
+					// MEGAMAN: RIGHT FOOT
+					glPushMatrix();
+					glTranslated(0, 0.2, 3);
+					glScaled(1, 1.2, 1);
+					glRotated(VAL(RIGHT_FOOT_FLEX), 1, 0, 0);
+					drawCylinder(1.5, 1.2, 1.8);
+					glPopMatrix();
+
+				glPopMatrix();
+
 			glPopMatrix();
 
-		glTranslated(-7, 0, sin((VAL(ROTATE)+90)*M_PI/180) - sin((VAL(ROTATE)-90)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)-90)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
+			// MEGAMAN: LEFT LEG
+			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
 			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(1, 0.2, 1);
-			drawBox(0.1, 1, 0.4);
-			glTranslated(1, 0, 0);
-			drawBox(0.1, 1, 0.4);
-			glPopMatrix();
+			glTranslated(3.2, -0.5, 1.25);
+			glRotated(90, 1, 0, 0);
+			glRotated(VAL(LEFT_LEG_FLEX), 1, 0, 0);
+			glRotated(VAL(LEFT_LEG_SIDE_FLEX), 0, 1, 0);
+			drawCylinder(2.5, 1, 1);
 
-		glTranslated(3.5, -3.5, sin((VAL(ROTATE)-90)*M_PI/180) - sin((VAL(ROTATE)+180)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)+180)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
-			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(1, 0.1, 0.4);
-			glTranslated(1, 1, 0);
-			drawBox(-1, -0.1, 0.4);
-			drawBox(-0.2, -1, 1);
-			glPopMatrix();
+				// MEGAMAN: LEFT LOWER LEG
+				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				glPushMatrix();
+				glTranslated(0, 0, 2.5);
+				glRotated(VAL(LEFT_LOWER_LEG_FLEX), 1, 0, 0);
+				drawCylinder(3, 1.2, 1.5);
 
-		glTranslated(2.47487, 1.02513, sin((VAL(ROTATE)+180)*M_PI/180) - sin((VAL(ROTATE)+135)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)+135)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
-			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glRotated(135, 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(1, 0.2, 1);
-			drawBox(0.1, 1, 0.4);
-			glTranslated(1, 0, 0);
-			drawBox(0.1, 1, 0.4);
-			glPopMatrix();
+					// MEGAMAN: RIGHT FOOT
+					glPushMatrix();
+					glTranslated(0, 0.2, 3);
+					glScaled(1, 1.2, 1);
+					glRotated(VAL(LEFT_FOOT_FLEX), 1, 0, 0);
+					drawCylinder(1.5, 1.2, 1.8);
+					glPopMatrix();
 
-		glTranslated(-4.94974, 0, sin((VAL(ROTATE)+135)*M_PI/180) - sin((VAL(ROTATE)-135)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)-135)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
-			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glRotated(45, 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(1, 0.2, 1);
-			drawBox(0.1, 1, 0.4);
-			glTranslated(1, 0, 0);
-			drawBox(0.1, 1, 0.4);
-			glPopMatrix();
+				glPopMatrix();
 
-		glTranslated(0, 4.94974, sin((VAL(ROTATE)-135)*M_PI/180) - sin((VAL(ROTATE)-45)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)-45)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
-			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glRotated(-45, 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(1, 0.2, 1);
-			drawBox(0.1, 1, 0.4);
-			glTranslated(1, 0, 0);
-			drawBox(0.1, 1, 0.4);
-			glPopMatrix();
-
-		glTranslated(4.94974, 0, sin((VAL(ROTATE)-45)*M_PI/180) - sin((VAL(ROTATE)+45)*M_PI/180));
-		drawCylinder(3+sin((VAL(ROTATE)+45)*M_PI/180), 0.1, 0.2);
-		// drawSphere(0.5);
-			glPushMatrix();
-			glRotated(VAL(SEAT_ROTATE), 0, 0, 1);
-			glRotated(-135, 0, 0, 1);
-			glTranslated(-0.5, -0.5, -0.2);
-			drawBox(1, 1, 0.2);
-			drawBox(1, 0.2, 1);
-			drawBox(0.1, 1, 0.4);
-			glTranslated(1, 0, 0);
-			drawBox(0.1, 1, 0.4);
 			glPopMatrix();
 
 		glPopMatrix();
@@ -282,12 +221,20 @@ int main()
 	controls[LIGHT_X] = ModelerControl("Light PosX", 0, 10, 0.1f, 5);
 	controls[LIGHT_Y] = ModelerControl("Light PosY", 0, 10, 0.1f, 5);
 	controls[LIGHT_Z] = ModelerControl("Light PosZ", 0, 10, 0.1f, 0);
-	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", 0, 90, 1, 0);
-	controls[RIGHT_ARM_UP] = ModelerControl("Right Arm Up", 0, 90, 1, 0);
-	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Fore Arm Flex", 0, 90, 1, 0);
-	controls[LEFT_ARM_FLEX] = ModelerControl("Left Arm Flex", 0, 90, 1, 0);
-	controls[LEFT_ARM_UP] = ModelerControl("Left Arm Up", 0, 90, 1, 0);
+	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", -30, 90, 1, 0);
+	controls[RIGHT_ARM_SIDE_FLEX] = ModelerControl("Right Arm Side Flex", 0, 90, 1, 0);
+	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Forearm Flex", 0, 90, 1, 0);
+	controls[LEFT_ARM_FLEX] = ModelerControl("Left Arm Flex", -30, 90, 1, 0);
+	controls[LEFT_ARM_SIDE_FLEX] = ModelerControl("Left Arm Side Flex", 0, 90, 1, 0);
 	controls[LEFT_FOREARM_FLEX] = ModelerControl("Left Fore Arm Flex", 0, 90, 1, 0);
+	controls[RIGHT_LEG_FLEX] = ModelerControl("Right Leg Flex", -45, 45, 1, 0);
+	controls[RIGHT_LEG_SIDE_FLEX] = ModelerControl("Right Leg Side Flex", -20, 80, 1, 0);
+	controls[RIGHT_LOWER_LEG_FLEX] = ModelerControl("Right Lower Leg Flex", 0, 90, 1, 0);
+	controls[RIGHT_FOOT_FLEX] = ModelerControl("Right Foot Flex", 0, 90, 1, 0);
+	controls[LEFT_LEG_FLEX] = ModelerControl("Left Leg Flex", -45, 45, 1, 0);
+	controls[LEFT_LEG_SIDE_FLEX] = ModelerControl("Left Leg Side Flex", -20, 80, 1, 0);
+	controls[LEFT_LOWER_LEG_FLEX] = ModelerControl("Left Lower Leg Flex", 0, 90, 1, 0);
+	controls[LEFT_FOOT_FLEX] = ModelerControl("Left Foot Flex", 0, 90, 1, 0);
 
     ModelerApplication::Instance()->Init(&createMegamanModel, controls, NUMCONTROLS);
     return ModelerApplication::Instance()->Run();
