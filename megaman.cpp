@@ -9,10 +9,13 @@
 #include "modelerui.h"
 
 // Colors
-#define MEGAMAN_LIGHT_BLUE 0.455f, 0.7255f, 0.855f
-#define MEGAMAN_DARK_BLUE 0.3098f, 0.4902f, 0.8275f
+#define MEGAMAN_LIGHT 0.455f, 0.7255f, 0.855f
+#define MEGAMAN_DARK 0.3098f, 0.4902f, 0.8275f
 #define MEGAMAN_RED 1.0f, 0.0f, 0.0f
 #define MEGAMAN_SKIN 1.0f, 0.8667f, 0.7647f
+
+#define FIREMAN_LIGHT 0.588f, 0.592f, 0.5608f
+#define FIREMAN_DARK 0.9294f, 0.2627f, 0.15686f
 
 // To make a MegamanModel, we inherit off of ModelerView
 class MegamanModel : public ModelerView 
@@ -25,6 +28,7 @@ public:
 
 	void addCustomLighting();
 	void animateStep();
+	void setMegamanColor(int type, bool light);
 
 private:
 	const int animationTotalFrame = 120;
@@ -53,6 +57,28 @@ ModelerView* createMegamanModel(int x, int y, int w, int h, char *label)
     return new MegamanModel(x,y,w,h,label); 
 }
 
+void MegamanModel::setMegamanColor(int type, bool light)
+{
+	switch(type)
+	{
+		case 0:
+			if(light)
+				setDiffuseColor(MEGAMAN_LIGHT);
+			else
+				setDiffuseColor(MEGAMAN_DARK);
+			break;
+		case 1:
+			if (light)
+				setDiffuseColor(FIREMAN_LIGHT);
+			else
+				setDiffuseColor(FIREMAN_DARK);
+			break;
+		default:
+			break;
+	}
+}
+
+
 // We are going to override (is that the right word?) the draw()
 // method of ModelerView to draw out MegamanModel
 void MegamanModel::draw()
@@ -67,13 +93,15 @@ void MegamanModel::draw()
 	this->addCustomLighting(); //Whistle No.1
 	this->animateStep();
 
+	int megamanType = VAL(MEGAMAN_TYPE);
+
 	// draw the sample model
 	setDiffuseColor(COLOR_GREEN);
 	glPushMatrix();
 	glTranslated(VAL(XPOS), VAL(YPOS), VAL(ZPOS));
 
 		// MEGAMAN: BODY
-		setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+		setMegamanColor(megamanType, true);
 		glPushMatrix();
 		glTranslated(-2, -2.5, -1.25);
 		drawBox(4, 5, 2.5);
@@ -89,7 +117,7 @@ void MegamanModel::draw()
 			drawSphere(2.4);
 
 				// MEGAMAN: HELMET TOP
-				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0.5, -0.2);
 				drawSphere(2.5);
@@ -108,7 +136,7 @@ void MegamanModel::draw()
 				glPopMatrix();
 
 				// MEGAMAN: HELMET LEFT EAR
-				setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+				setMegamanColor(megamanType, true);
 				glPushMatrix();
 				glTranslated(2.45, 0, -0.2);
 				glRotated(90, 0, 1, 0);
@@ -123,7 +151,6 @@ void MegamanModel::draw()
 				glPopMatrix();
 
 				// MEGAMAN: HELMET TOP
-				setDiffuseColor(MEGAMAN_LIGHT_BLUE);
 				glPushMatrix();
 				glTranslated(0, 1.4, -0.2);
 				glScaled(0.7, 1.8, 2.15);
@@ -140,7 +167,7 @@ void MegamanModel::draw()
 			glPopMatrix();
 		
 			// MEGAMAN: RIGHT UPPER ARM
-			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+			setMegamanColor(megamanType, true);
 			glPushMatrix();
 			glTranslated(0, 4, 1.25);
 			glRotated(-90, 0, 1, 0);
@@ -149,7 +176,7 @@ void MegamanModel::draw()
 			drawCylinder(3, 1, 1);
 
 				// MEGAMAN: RIGHT FORE ARM
-				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0, 3);
 				glRotated(rightForearmFlex, 0, 1, 0);
@@ -166,7 +193,7 @@ void MegamanModel::draw()
 			glPopMatrix();
 
 			// MEGAMAN: LEFT UPPER ARM
-			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+			setMegamanColor(megamanType, true);
 			glPushMatrix();
 			glTranslated(4, 4, 1.25);
 			glRotated(90, 0, 1, 0);
@@ -175,7 +202,7 @@ void MegamanModel::draw()
 			drawCylinder(3, 1, 1);
 
 				// MEGAMAN: LEFT FORE ARM
-				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0, 3);
 				glRotated(leftForearmFlex, 0, -1, 0);
@@ -228,14 +255,14 @@ void MegamanModel::draw()
 			glPopMatrix();
 
 			// MEGAMAN: PANTS
-			setDiffuseColor(MEGAMAN_DARK_BLUE);
+			setMegamanColor(megamanType, false);
 			glPushMatrix();
 			glTranslated(-0.25, -1, -0.25);
 			drawBox(4.5, 2, 3);
 			glPopMatrix();
 
 			// MEGAMAN: RIGHT LEG
-			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+			setMegamanColor(megamanType, true);
 			glPushMatrix();
 			glTranslated(0.8, -0.5, 1.25);
 			glRotated(90, 1, 0, 0);
@@ -244,7 +271,7 @@ void MegamanModel::draw()
 			drawCylinder(2.5, 1, 1);
 
 				// MEGAMAN: RIGHT LOWER LEG
-				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0, 2.5);
 				glRotated(VAL(RIGHT_LOWER_LEG_FLEX), 1, 0, 0);
@@ -263,7 +290,7 @@ void MegamanModel::draw()
 			glPopMatrix();
 
 			// MEGAMAN: LEFT LEG
-			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+			setMegamanColor(megamanType, true);
 			glPushMatrix();
 			glTranslated(3.2, -0.5, 1.25);
 			glRotated(90, 1, 0, 0);
@@ -272,7 +299,7 @@ void MegamanModel::draw()
 			drawCylinder(2.5, 1, 1);
 
 				// MEGAMAN: LEFT LOWER LEG
-				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0, 2.5);
 				glRotated(VAL(LEFT_LOWER_LEG_FLEX), 1, 0, 0);
@@ -417,6 +444,7 @@ int main()
 	controls[LEFT_LEG_SIDE_FLEX] = ModelerControl("Left Leg Side Flex", -20, 80, 1, 0);
 	controls[LEFT_LOWER_LEG_FLEX] = ModelerControl("Left Lower Leg Flex", 0, 90, 1, 0);
 	controls[LEFT_FOOT_FLEX] = ModelerControl("Left Foot Flex", 0, 90, 1, 0);
+	controls[MEGAMAN_TYPE] = ModelerControl("Change Megaman Tyoe", 0, 1, 1, 0);
 
     ModelerApplication::Instance()->Init(&createMegamanModel, controls, NUMCONTROLS);
     return ModelerApplication::Instance()->Run();
