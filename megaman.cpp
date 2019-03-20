@@ -19,6 +19,8 @@ public:
         : ModelerView(x,y,w,h,label) { }
 
     virtual void draw();
+
+	void addCustomLighting();
 };
 
 // We need to make a creator function, mostly because of
@@ -38,6 +40,8 @@ void MegamanModel::draw()
     // matrix stuff.  Unless you want to fudge directly with the 
 	// projection matrix, don't bother with this ...
     ModelerView::draw();
+
+	addCustomLighting(); //Whistle No.1
 
 	// draw the sample model
 	setDiffuseColor(COLOR_GREEN);
@@ -202,6 +206,24 @@ void MegamanModel::draw()
 	glPopMatrix();
 }
 
+void MegamanModel::addCustomLighting()
+{
+	//Configuring the customized light
+	glEnable(GL_LIGHTING);
+	GLfloat* lightPos = new GLfloat[4];
+	lightPos[0] = VAL(LIGHT_X);
+	lightPos[1] = VAL(LIGHT_Y);
+	lightPos[2] = VAL(LIGHT_Z);
+	lightPos[3] = 1; //w value of light - not alpha! let lightsource be a point in space
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+	//reference cube to show the position of light
+	glPushMatrix();
+	glTranslated(lightPos[0], lightPos[1], lightPos[2]);
+	setDiffuseColor(1.0, 1.0, 0.0);
+	drawBox(0.5, 0.5, 0.5);
+	glPopMatrix();
+}
+
 int main()
 {
 	// Initialize the controls
@@ -214,6 +236,9 @@ int main()
     controls[HEIGHT] = ModelerControl("Height", 1, 2.5, 0.1f, 1);
 	controls[ROTATE] = ModelerControl("Rotate", -180, 180, 1, 0);
 	controls[SEAT_ROTATE] = ModelerControl("Seat Rotate", -180, 180, 1, 0);
+	controls[LIGHT_X] = ModelerControl("Light PosX", 0, 10, 0.1f, 5);
+	controls[LIGHT_Y] = ModelerControl("Light PosY", 0, 10, 0.1f, 5);
+	controls[LIGHT_Z] = ModelerControl("Light PosZ", 0, 10, 0.1f, 0);
 	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", 0, 90, 1, 0);
 	controls[RIGHT_ARM_UP] = ModelerControl("Right Arm Up", 0, 90, 1, 0);
 	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Form Arm Flex", 0, 90, 1, 0);
