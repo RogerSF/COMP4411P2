@@ -11,6 +11,7 @@
 #define MEGAMAN_LIGHT_BLUE 0.455f, 0.7255f, 0.855f
 #define MEGAMAN_DARK_BLUE 0.3098f, 0.4902f, 0.8275f
 #define MEGAMAN_RED 1.0f, 0.0f, 0.0f
+#define MEGAMAN_SKIN 1.0f, 0.8667f, 0.7647f
 
 // To make a MegamanModel, we inherit off of ModelerView
 class MegamanModel : public ModelerView 
@@ -54,6 +55,67 @@ void MegamanModel::draw()
 		glPushMatrix();
 		glTranslated(-2, -2.5, -1.25);
 		drawBox(4, 5, 2.5);
+
+			// MEGAMAN: HEAD
+			setDiffuseColor(MEGAMAN_SKIN);
+			glPushMatrix();
+			glTranslated(2, 5.8, 1.25);
+			glRotated(VAL(HEAD_NOD), 1, 0, 0);
+			glRotated(VAL(HEAD_SHAKE), 0, 1, 0);
+			glRotated(VAL(HEAD_TILT), 0, 0, 1);
+			glTranslated(0, 1.5, 0.2);
+			drawSphere(2.4);
+
+				// MEGAMAN: HELMET TOP
+				setDiffuseColor(MEGAMAN_DARK_BLUE);
+				glPushMatrix();
+				glTranslated(0, 0.5, -0.2);
+				drawSphere(2.5);
+				glPopMatrix();
+
+				// MEGAMAN: HELMET LEFT
+				glPushMatrix();
+				glTranslated(-0.2, 0, -0.28);
+				drawSphere(2.5);
+				glPopMatrix();
+
+				// MEGAMAN: HELMET LEFT
+				glPushMatrix();
+				glTranslated(0.2, 0, -0.28);
+				drawSphere(2.5);
+				glPopMatrix();
+
+				// MEGAMAN: HELMET LEFT EAR
+				setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+				glPushMatrix();
+				glTranslated(2.45, 0, -0.2);
+				glRotated(90, 0, 1, 0);
+				drawCylinder(0.5, 1, 0.8);
+				glPopMatrix();
+
+				// MEGAMAN: HELMET RIGHT EAR
+				glPushMatrix();
+				glTranslated(-2.45, 0, -0.2);
+				glRotated(90, 0, -1, 0);
+				drawCylinder(0.5, 1, 0.8);
+				glPopMatrix();
+
+				// MEGAMAN: HELMET TOP
+				setDiffuseColor(MEGAMAN_LIGHT_BLUE);
+				glPushMatrix();
+				glTranslated(0, 1.4, -0.2);
+				glScaled(0.7, 1.8, 2.15);
+				drawSphere(1);
+				glPopMatrix();
+
+				// MEGAMAN: HELMET TOP
+				glPushMatrix();
+				glTranslated(-0.35, 1, 2.15);
+				glRotated(21, -1, 0, 0);
+				drawBox(0.7, 0.7, 0.2);
+				glPopMatrix();
+
+			glPopMatrix();
 		
 			// MEGAMAN: RIGHT UPPER ARM
 			setDiffuseColor(MEGAMAN_LIGHT_BLUE);
@@ -221,6 +283,9 @@ int main()
 	controls[LIGHT_X] = ModelerControl("Light PosX", 0, 10, 0.1f, 5);
 	controls[LIGHT_Y] = ModelerControl("Light PosY", 0, 10, 0.1f, 5);
 	controls[LIGHT_Z] = ModelerControl("Light PosZ", 0, 10, 0.1f, 0);
+	controls[HEAD_NOD] = ModelerControl("Head Nod", -45, 45, 1, 0);
+	controls[HEAD_SHAKE] = ModelerControl("Head Shake", -90, 90, 1, 0);
+	controls[HEAD_TILT] = ModelerControl("Head Tilt", -45, 45, 1, 0);
 	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", -30, 90, 1, 0);
 	controls[RIGHT_ARM_SIDE_FLEX] = ModelerControl("Right Arm Side Flex", 0, 90, 1, 0);
 	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Forearm Flex", 0, 90, 1, 0);
