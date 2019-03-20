@@ -1,8 +1,14 @@
 #include "modelerdraw.h"
 #include <FL/gl.h>
+#include <GL/gl.h>
 #include <GL/glu.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include <cstdio>
 #include <math.h>
+#include <iostream>
+using namespace std;
 
 // ********************************************************
 // Support functions from previous version of modeler
@@ -295,7 +301,96 @@ void drawBox( double x, double y, double z )
 
 void drawTextureBox( double x, double y, double z )
 {
-    // NOT IMPLEMENTED, SORRY (ehsu)
+    ModelerDrawState *mds = ModelerDrawState::Instance();
+
+    _setupOpenGl();
+
+    if (mds->m_rayFile)
+    {
+        _dump_current_modelview();
+        fprintf(mds->m_rayFile,
+            "scale(%f,%f,%f,translate(0.5,0.5,0.5,box {\n", x, y, z);
+        _dump_current_material();
+        fprintf(mds->m_rayFile, "})))\n");
+    }
+    else
+    {
+        // load the texture
+        unsigned char* data;
+        int width, height;
+
+        data = readBMP("stone.bmp", width, height);
+        if (data == NULL) {
+            cout << "no texture" << endl;
+        }
+        cout<<width<<", "<<height<<endl;
+
+        GLuint textureID;
+
+        glGenTextures(1, &textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL); // GL_MODULATE
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glEnable(GL_TEXTURE_2D);
+
+        /* remember which matrix mode OpenGL was in. */
+        int savemode;
+        glGetIntegerv(GL_MATRIX_MODE, &savemode);
+
+        /* switch to the model matrix and scale by x,y,z. */
+        glMatrixMode(GL_MODELVIEW);
+        glPushMatrix();
+        glScaled(x, y, z);
+
+        glBegin(GL_QUADS);
+
+        glNormal3d(0.0, 0.0, -1.0);
+        glTexCoord2f(0.0f, 0.0f); glVertex3d(0.0, 0.0, 0.0);
+        glTexCoord2f(0.0f, 1.0f); glVertex3d(0.0, 1.0, 0.0);
+        glTexCoord2f(1.0f, 1.0f); glVertex3d(1.0, 1.0, 0.0);
+        glTexCoord2f(1.0f, 0.0f); glVertex3d(1.0, 0.0, 0.0);
+
+        glNormal3d(0.0, -1.0, 0.0);
+        glTexCoord2f(0.0f, 0.0f);  glVertex3d(0.0, 0.0, 0.0);
+        glTexCoord2f(1.0f, 0.0f);  glVertex3d(1.0, 0.0, 0.0);
+        glTexCoord2f(1.0f, 1.0f);  glVertex3d(1.0, 0.0, 1.0);
+        glTexCoord2f(0.0f, 1.0f);  glVertex3d(0.0, 0.0, 1.0);
+
+        glNormal3d(-1.0, 0.0, 0.0);
+        glTexCoord2f(0.0f, 0.0f);  glVertex3d(0.0, 0.0, 0.0);
+        glTexCoord2f(0.0f, 1.0f);  glVertex3d(0.0, 0.0, 1.0);
+        glTexCoord2f(1.0f, 1.0f);  glVertex3d(0.0, 1.0, 1.0);
+        glTexCoord2f(1.0f, 0.0f);  glVertex3d(0.0, 1.0, 0.0);
+
+        glNormal3d(0.0, 0.0, 1.0);
+        glTexCoord2f(0.0f, 0.0f);  glVertex3d(0.0, 0.0, 1.0);
+        glTexCoord2f(1.0f, 0.0f);  glVertex3d(1.0, 0.0, 1.0);
+        glTexCoord2f(1.0f, 1.0f);  glVertex3d(1.0, 1.0, 1.0);
+        glTexCoord2f(0.0f, 1.0f);  glVertex3d(0.0, 1.0, 1.0);
+
+        glNormal3d(0.0, 1.0, 0.0);
+        glTexCoord2f(0.0f, 0.0f);  glVertex3d(0.0, 1.0, 0.0);
+        glTexCoord2f(0.0f, 1.0f);  glVertex3d(0.0, 1.0, 1.0);
+        glTexCoord2f(1.0f, 1.0f);  glVertex3d(1.0, 1.0, 1.0);
+        glTexCoord2f(1.0f, 0.0f);  glVertex3d(1.0, 1.0, 0.0);
+
+        glNormal3d(1.0, 0.0, 0.0);
+        glTexCoord2f(0.0f, 0.0f);  glVertex3d(1.0, 0.0, 0.0);
+        glTexCoord2f(1.0f, 0.0f);  glVertex3d(1.0, 1.0, 0.0);
+        glTexCoord2f(1.0f, 1.0f);  glVertex3d(1.0, 1.0, 1.0);
+        glTexCoord2f(0.0f, 1.0f);  glVertex3d(1.0, 0.0, 1.0);
+
+        glEnd();
+        glDisable(GL_TEXTURE_2D);
+        /* restore the model matrix stack, and switch back to the matrix
+        mode we were in. */
+        glPopMatrix();
+        glMatrixMode(savemode);
+    }
 }
 
 void drawCylinder( double h, double r1, double r2 )
@@ -378,6 +473,112 @@ void drawCylinder( double h, double r1, double r2 )
     }
     
 }
+
+void drawTextureCylinder( double h, double r1, double r2 )
+{
+    ModelerDrawState *mds = ModelerDrawState::Instance();
+    int divisions;
+
+    _setupOpenGl();
+    
+    switch(mds->m_quality)
+    {
+    case HIGH: 
+        divisions = 32; break;
+    case MEDIUM: 
+        divisions = 20; break;
+    case LOW:
+        divisions = 12; break;
+    case POOR:
+        divisions = 8; break;
+    }
+
+    unsigned char* data;
+    int width, height;
+
+    data = readBMP("stone.bmp", width, height);
+    if (data == NULL) {
+        cout << "no texture" << endl;
+    }
+
+    GLuint textureID;
+
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL); //MODULATE
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glEnable(GL_TEXTURE_2D);
+
+    if (mds->m_rayFile)
+    {
+        _dump_current_modelview();
+        fprintf(mds->m_rayFile, 
+            "cone { height=%f; bottom_radius=%f; top_radius=%f;\n", h, r1, r2 );
+        _dump_current_material();
+        fprintf(mds->m_rayFile, "})\n" );
+    }
+    else
+    {
+        GLUquadricObj* gluq;
+        
+        /* GLU will again do the work.  draw the sides of the cylinder. */
+        gluq = gluNewQuadric();
+        gluQuadricDrawStyle( gluq, GLU_FILL );
+        gluQuadricTexture( gluq, GL_TRUE );
+        gluCylinder( gluq, r1, r2, h, divisions, divisions);
+        gluDeleteQuadric( gluq );
+        
+        glDisable(GL_TEXTURE_GEN_S);
+        glDisable(GL_TEXTURE_GEN_T);
+        glDisable(GL_TEXTURE_2D);
+
+        if ( r1 > 0.0 )
+        {
+        /* if the r1 end does not come to a point, draw a flat disk to
+            cover it up. */
+            
+            gluq = gluNewQuadric();
+            gluQuadricDrawStyle( gluq, GLU_FILL );
+            gluQuadricTexture( gluq, GL_TRUE );
+            gluQuadricOrientation( gluq, GLU_INSIDE );
+            gluDisk( gluq, 0.0, r1, divisions, divisions);
+            gluDeleteQuadric( gluq );
+        }
+        
+        if ( r2 > 0.0 )
+        {
+        /* if the r2 end does not come to a point, draw a flat disk to
+            cover it up. */
+            
+            /* save the current matrix mode. */ 
+            int savemode;
+            glGetIntegerv( GL_MATRIX_MODE, &savemode );
+            
+            /* translate the origin to the other end of the cylinder. */
+            glMatrixMode( GL_MODELVIEW );
+            glPushMatrix();
+            glTranslated( 0.0, 0.0, h );
+            
+            /* draw a disk centered at the new origin. */
+            gluq = gluNewQuadric();
+            gluQuadricDrawStyle( gluq, GLU_FILL );
+            gluQuadricTexture( gluq, GL_TRUE );
+            gluQuadricOrientation( gluq, GLU_OUTSIDE );
+            gluDisk( gluq, 0.0, r2, divisions, divisions);
+            gluDeleteQuadric( gluq );
+            
+            /* restore the matrix stack and mode. */
+            glPopMatrix();
+            glMatrixMode( savemode );
+        }
+    }
+    
+}
+
 void drawTriangle( double x1, double y1, double z1,
                    double x2, double y2, double z2,
                    double x3, double y3, double z3 )

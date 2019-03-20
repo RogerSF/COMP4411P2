@@ -21,13 +21,13 @@ where eye, at and up are each 3 element arrays that specify the position of the 
 Bells and Whistles
 One bell is worth two whistles.
 
-- [ ] :notes: Change the default light source to illuminate your scene more dramatically.
+- [X] :notes: Change the default light source to illuminate your scene more dramatically.
 
 - [ ] :notes: Allow for adjustable levels of detail for your character. You will need to add a UI control for this.
 
 - [ ] :notes: Come up with another whistle and implement it.  A whistle is something that extends the use of one of the things you are already doing.  It is part of the basic model construction, but extended or cloned and modified in an interesting way.
 
-- [ ] :bell: Use a texture map on all or part of your character. (The safest way to do this is to implement your own primitives inside your model file that do texture mapping.)
+- [X] :bell: Use a texture map on all or part of your character. (The safest way to do this is to implement your own primitives inside your model file that do texture mapping.)
 
 - [ ] :bell: Build a complex shape as a set of polygonal faces, using the "triangle" primitive to render them.
 
