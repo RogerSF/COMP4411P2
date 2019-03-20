@@ -617,6 +617,89 @@ void drawTriangle( double x1, double y1, double z1,
     }
 }
 
+void drawXYCircle(double x, double y, double z, double r, double n_segment) {
+    ModelerDrawState *mds = ModelerDrawState::Instance();
+
+    _setupOpenGl();
+    
+    if (mds->m_rayFile)
+    {
+        _dump_current_modelview();
+        fprintf(mds->m_rayFile,  
+            "scale(%f,%f,%f,translate(0.5,0.5,0.5,box {\n", x, y, z );
+        _dump_current_material();
+        fprintf(mds->m_rayFile,  "})))\n" );
+    }
+    else
+    {
+        /* remember which matrix mode OpenGL was in. */
+        // int savemode;
+        // glGetIntegerv( GL_MATRIX_MODE, &savemode );
+        
+        // //  switch to the model matrix and scale by x,y,z. 
+        // glMatrixMode( GL_MODELVIEW );
+        // glPushMatrix();
+        // glScaled( x, y, z );
+        
+        //glBegin( GL_QUADS );
+
+        glBegin(GL_LINE_LOOP); //GL_TRIANGLES
+        // glNormal3d( 0.0, 0.0, -1.0 );
+
+        double theta = 2 * M_PI / n_segment;
+        for (double i = 0; i < 2 * M_PI; i += theta) {
+            glVertex3d( x + r * cos(i), y, z + r * sin(i)); 
+        } 
+        
+        //glVertex3d( 0.0, 1.0, 0.0 );        
+        glEnd();
+        
+        /* restore the model matrix stack, and switch back to the matrix
+        mode we were in. */
+        // glPopMatrix();
+        // glMatrixMode( savemode );
+
+        // double x1 = x, y1 = y, z1 = z, x2 = x1 + 3, y2 = y + 3, z2 = z, x3 = x, y3 = y+3, z3=z;
+        // double a, b, c, d, e, f;
+        
+        // /* the normal to the triangle is the cross product of two of its edges. */
+        // a = x2-x1;
+        // b = y2-y1;
+        // c = z2-z1;
+        
+        // d = x3-x1;
+        // e = y3-y1;
+        // f = z3-z1;
+
+        // glBegin(GL_LINE_LOOP  ); // GL_TRIANGLES
+        // glNormal3d( b*f - c*e, c*d - a*f, a*e - b*d );
+        // glVertex3d( x1, y1, z1 );
+        // glVertex3d( x2, y2, z2 );
+        // glVertex3d( x3, y3, z3 );
+        // glEnd();
+    }
+}
+
+void drawTorus(double x, double y, double z, double r1, double r2) {
+    double r = (r2 - r1) / 2;
+    double n_segment = 100;
+    double theta = 2 * M_PI / n_segment;
+    for (double i = 0; i < 2 * M_PI; i += theta) {
+        drawXYCircle(x, y+r*sin(i), z, r1+r-r*cos(i), 100);
+    } 
+}
+
+void drawDiamond(double x, double y, double z, double rx, double ry, double rz) {
+    drawTriangle(x, y, z+rz, x-rx, y, z, x, y+ry, z);
+    drawTriangle(x, y, z+rz, x-rx, y, z, x, y-ry, z);
+    drawTriangle(x, y, z+rz, x+rx, y, z, x, y+ry, z);
+    drawTriangle(x, y, z+rz, x+rx, y, z, x, y-ry, z);
+
+    drawTriangle(x, y, z-rz, x-rx, y, z, x, y+ry, z);
+    drawTriangle(x, y, z-rz, x-rx, y, z, x, y-ry, z);
+    drawTriangle(x, y, z-rz, x+rx, y, z, x, y+ry, z);
+    drawTriangle(x, y, z-rz, x+rx, y, z, x, y-ry, z);
+}
 
 
 

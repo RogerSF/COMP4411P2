@@ -116,6 +116,10 @@ void MegamanModel::draw()
 			glTranslated(0, 1.5, 0.2);
 			drawSphere(2.4);
 
+			setDiffuseColor(COLOR_GOLD);
+			drawDiamond(0, 4.5, 0, 1, 1, 1);
+			drawTorus(0, 4.5, 0, 2, 2.5);
+
 				// MEGAMAN: HELMET TOP
 				setMegamanColor(megamanType, false);
 				glPushMatrix();
@@ -124,6 +128,7 @@ void MegamanModel::draw()
 				glPopMatrix();
 
 				// MEGAMAN: HELMET LEFT
+				// setDiffuseColor(MEGAMAN_SKIN);
 				glPushMatrix();
 				glTranslated(-0.2, 0, -0.28);
 				drawSphere(2.5);
@@ -408,7 +413,7 @@ void MegamanModel::addCustomLighting()
 	glPushMatrix();
 	glTranslated(lightPos[0], lightPos[1], lightPos[2]);
 	setDiffuseColor(1.0, 1.0, 0.0);
-	drawBox(0.5, 0.5, 0.5);
+	drawTextureBox(0.5, 0.5, 0.5);
 	glPopMatrix();
 }
 

@@ -96,5 +96,12 @@ void drawTextureCylinder( double h, double r1, double r2 );
 void drawTriangle( double x1, double y1, double z1,
 			       double x2, double y2, double z2,
 			       double x3, double y3, double z3 );
+// Draw XY plane circle
+void drawXYCircle(double x, double y, double z, double r, double n_segment); 
 
+// Torus with center position x y z and min_r: r1 max_r: r2
+void drawTorus(double x, double y, double z, double r1, double r2);
+
+// Diamond drawing using triangles - Bell 2.0
+void drawDiamond(double x, double y, double z, double rx, double ry, double rz);
 #endif
