@@ -15,6 +15,7 @@ const float kMouseRotationSensitivity		= 1.0f/90.0f;
 const float kMouseTranslationXSensitivity	= 0.03f;
 const float kMouseTranslationYSensitivity	= 0.03f;
 const float kMouseZoomSensitivity			= 0.08f;
+const float kMouseTwistSensitivity			= 0.01f;
 
 void normalize(Vec3f &input) {
 	float length = sqrt(input[0] * input[0] + input[1] * input[1] + input[2] * input[2]) ;
@@ -107,9 +108,9 @@ void Camera::calculateViewingTransformParameters()
 	mPosition = originXform * (azimXform * (elevXform * (dollyXform * mPosition)));
 
 	if ( fmod((double)mElevation, 2.0*M_PI) < 3*M_PI/2 && fmod((double)mElevation, 2.0*M_PI) > M_PI/2 )
-		mUpVector= Vec3f(0,-1,0);
+		mUpVector = Vec3f(sin(mTwist), -cos(mTwist), 0);
 	else
-		mUpVector= Vec3f(0,1,0);
+		mUpVector = Vec3f(sin(mTwist), cos(mTwist), 0);
 
 	mDirtyTransform = false;
 }
@@ -170,11 +171,15 @@ void Camera::dragMouse( int x, int y )
 	case kActionZoom:
 		{
 			float dDolly = -mouseDelta[1] * kMouseZoomSensitivity;
+			float dTwist = mouseDelta[0] * kMouseTwistSensitivity;
 			setDolly(getDolly() + dDolly);
+			setTwist(getTwist() + dTwist);
 			break;
 		}
 	case kActionTwist:
-		// Not implemented
+		{
+			break;
+		}
 	default:
 		break;
 	}
