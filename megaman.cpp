@@ -6,6 +6,7 @@
 #include <FL/gl.h>
 #include <math.h>
 #include "modelerglobals.h"
+#include "modelerui.h"
 
 // Colors
 #define MEGAMAN_LIGHT_BLUE 0.455f, 0.7255f, 0.855f
@@ -23,6 +24,26 @@ public:
     virtual void draw();
 
 	void addCustomLighting();
+	void animateStep();
+
+private:
+	const int animationTotalFrame = 120;
+	int animationFrame = 0;
+	float rightArmFlex = 0;
+	float rightArmSideFlex = 0;
+	float rightForearmFlex = 0;
+	float leftArmFlex = 0;
+	float leftArmSideFlex = 0;
+	float leftForearmFlex = 0;
+	float energyPathTransformFactor = 0;
+	float laserTransformFactor = 0;
+	bool showChargingEnergy = false;
+	bool showLaser = false;
+
+	float lerp(float a, float b, float f)
+	{
+		return a + f * (b - a);
+	}
 };
 
 // We need to make a creator function, mostly because of
@@ -43,7 +64,8 @@ void MegamanModel::draw()
 	// projection matrix, don't bother with this ...
     ModelerView::draw();
 
-	addCustomLighting(); //Whistle No.1
+	this->addCustomLighting(); //Whistle No.1
+	this->animateStep();
 
 	// draw the sample model
 	setDiffuseColor(COLOR_GREEN);
@@ -122,15 +144,15 @@ void MegamanModel::draw()
 			glPushMatrix();
 			glTranslated(0, 4, 1.25);
 			glRotated(-90, 0, 1, 0);
-			glRotated(VAL(RIGHT_ARM_FLEX), 0, 1, 0);
-			glRotated(VAL(RIGHT_ARM_SIDE_FLEX), 0, 0, 1);
+			glRotated(rightArmFlex, 0, 1, 0);
+			glRotated(rightArmSideFlex, 1, 0, 0);
 			drawCylinder(3, 1, 1);
 
 				// MEGAMAN: RIGHT FORE ARM
 				setDiffuseColor(MEGAMAN_DARK_BLUE);
 				glPushMatrix();
 				glTranslated(0, 0, 3);
-				glRotated(VAL(RIGHT_FOREARM_FLEX), 0, 1, 0);
+				glRotated(rightForearmFlex, 0, 1, 0);
 				drawCylinder(3, 1.2, 1.2);
 
 					// MEGAMAN: RIGHT HAND
@@ -148,15 +170,15 @@ void MegamanModel::draw()
 			glPushMatrix();
 			glTranslated(4, 4, 1.25);
 			glRotated(90, 0, 1, 0);
-			glRotated(VAL(LEFT_ARM_FLEX), 0, -1, 0);
-			glRotated(VAL(LEFT_ARM_SIDE_FLEX), 0, 0, -1);
+			glRotated(leftArmFlex, 0, -1, 0);
+			glRotated(leftArmSideFlex, 1, 0, 0);
 			drawCylinder(3, 1, 1);
 
 				// MEGAMAN: LEFT FORE ARM
 				setDiffuseColor(MEGAMAN_DARK_BLUE);
 				glPushMatrix();
 				glTranslated(0, 0, 3);
-				glRotated(VAL(LEFT_FOREARM_FLEX), 0, -1, 0);
+				glRotated(leftForearmFlex, 0, -1, 0);
 				drawCylinder(2.5, 1.2, 1.5);
 
 					// MEGAMAN: LEFT HAND CANNON
@@ -172,6 +194,29 @@ void MegamanModel::draw()
 							glPushMatrix();
 							glTranslated(0, 0, 0.5);
 							drawCylinder(0.55, 0.4, 0.4);
+
+							// Charging energy
+							if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showChargingEnergy) {
+								
+								for (int i = 0; i < 30; i++)
+								{
+									float r = float(rand() % 20) / float(100);
+									float dx = float((rand() % 80) - 40) / float(20);
+									float dy = float((rand() % 80) - 40) / float(20);
+									float dz = float(rand() % 80) / float(20);
+									glPushMatrix();
+									glTranslated(dx*energyPathTransformFactor, dy*energyPathTransformFactor, dz*energyPathTransformFactor + 0.5);
+									drawSphere(r);
+									glPopMatrix();
+								}
+							} else if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showLaser)
+							{
+								glPushMatrix();
+								glTranslated(0, 0, laserTransformFactor*3);
+								drawCylinder(2, 0.2 ,0.2);
+								glPopMatrix();
+							}
+
 							glPopMatrix();
 
 						glPopMatrix();
@@ -250,6 +295,78 @@ void MegamanModel::draw()
 	glPopMatrix();
 }
 
+void MegamanModel::animateStep()
+{
+	if(ModelerUserInterface::m_controlsAnimOnMenu->value())
+	{
+		if(this->animationFrame >= this->animationTotalFrame)
+		{
+			this->animationFrame = 0;
+		} else
+		{
+			this->animationFrame += 1;
+		}
+
+
+		if (animationFrame < 30)
+		{
+			float percentage = float(this->animationFrame) / float(30);
+			rightArmFlex = lerp(0, 90, percentage);
+			rightArmSideFlex = lerp(80, -10, percentage);
+			rightForearmFlex = lerp(0, 80, percentage);
+			leftArmFlex = lerp(0, 90, percentage);
+			leftArmSideFlex = lerp(80, 0, percentage);
+			leftForearmFlex = 0;
+		} else if (animationFrame < 55)
+		{
+			// Laser charge up
+			this->showChargingEnergy = true;
+			float percentage = float(this->animationFrame - 30) / float(25);
+			energyPathTransformFactor = lerp(1, 0, percentage);
+		} else if (animationFrame < 60)
+		{
+			this->showChargingEnergy = false;
+			this->showLaser = true;
+			float percentage = float(this->animationFrame - 55) / float(5);
+			rightArmFlex = lerp(90, 50, percentage);
+			rightArmSideFlex = lerp(-10, -30, percentage);
+			leftArmSideFlex = lerp(0, -30, percentage);
+			laserTransformFactor = lerp(0, 1, percentage);
+		} else if (animationFrame < 65)
+		{
+			this->showLaser = false;
+			float percentage = float(this->animationFrame - 60) / float(5);
+			rightArmFlex = lerp(50, 20, percentage);
+			rightArmSideFlex = lerp(-30, 0, percentage);
+			leftArmSideFlex = lerp(-30, -10, percentage);
+		} else if (animationFrame < 75)
+		{
+			// Pause
+		} else if (animationFrame < 105)
+		{
+			float percentage = float(this->animationFrame - 75) / float(30);
+			rightArmFlex = lerp(20, 0, percentage);
+			rightArmSideFlex = lerp(0, 80, percentage);
+			rightForearmFlex = lerp(80, 0, percentage);
+			leftArmSideFlex = lerp(-10, 80, percentage);
+			leftArmFlex = lerp(90, 0, percentage);
+		} else
+		{
+			// Pause
+		}
+		
+	} else
+	{
+		rightArmFlex = VAL(RIGHT_ARM_FLEX);
+		rightArmSideFlex = VAL(RIGHT_ARM_SIDE_FLEX);
+		rightForearmFlex = VAL(RIGHT_FOREARM_FLEX);
+		leftArmFlex = VAL(LEFT_ARM_FLEX);
+		leftArmSideFlex = VAL(LEFT_ARM_SIDE_FLEX);
+		leftForearmFlex = VAL(LEFT_FOREARM_FLEX);
+	}
+}
+
+
 void MegamanModel::addCustomLighting()
 {
 	//Configuring the customized light
@@ -287,10 +404,10 @@ int main()
 	controls[HEAD_SHAKE] = ModelerControl("Head Shake", -90, 90, 1, 0);
 	controls[HEAD_TILT] = ModelerControl("Head Tilt", -45, 45, 1, 0);
 	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", -30, 90, 1, 0);
-	controls[RIGHT_ARM_SIDE_FLEX] = ModelerControl("Right Arm Side Flex", 0, 90, 1, 0);
+	controls[RIGHT_ARM_SIDE_FLEX] = ModelerControl("Right Arm Side Flex", -30, 90, 1, 80);
 	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Forearm Flex", 0, 90, 1, 0);
 	controls[LEFT_ARM_FLEX] = ModelerControl("Left Arm Flex", -30, 90, 1, 0);
-	controls[LEFT_ARM_SIDE_FLEX] = ModelerControl("Left Arm Side Flex", 0, 90, 1, 0);
+	controls[LEFT_ARM_SIDE_FLEX] = ModelerControl("Left Arm Side Flex", -30, 90, 1, 80);
 	controls[LEFT_FOREARM_FLEX] = ModelerControl("Left Fore Arm Flex", 0, 90, 1, 0);
 	controls[RIGHT_LEG_FLEX] = ModelerControl("Right Leg Flex", -45, 45, 1, 0);
 	controls[RIGHT_LEG_SIDE_FLEX] = ModelerControl("Right Leg Side Flex", -20, 80, 1, 0);
