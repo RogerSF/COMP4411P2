@@ -599,7 +599,6 @@ void drawTriangle( double x1, double y1, double z1,
     {
         double a, b, c, d, e, f;
         
-        /* the normal to the triangle is the cross product of two of its edges. */
         a = x2-x1;
         b = y2-y1;
         c = z2-z1;
@@ -632,16 +631,6 @@ void drawXYCircle(double x, double y, double z, double r, double n_segment) {
     }
     else
     {
-        /* remember which matrix mode OpenGL was in. */
-        // int savemode;
-        // glGetIntegerv( GL_MATRIX_MODE, &savemode );
-        
-        // //  switch to the model matrix and scale by x,y,z. 
-        // glMatrixMode( GL_MODELVIEW );
-        // glPushMatrix();
-        // glScaled( x, y, z );
-        
-        //glBegin( GL_QUADS );
 
         glBegin(GL_LINE_LOOP); //GL_TRIANGLES
         // glNormal3d( 0.0, 0.0, -1.0 );
@@ -650,33 +639,7 @@ void drawXYCircle(double x, double y, double z, double r, double n_segment) {
         for (double i = 0; i < 2 * M_PI; i += theta) {
             glVertex3d( x + r * cos(i), y, z + r * sin(i)); 
         } 
-        
-        //glVertex3d( 0.0, 1.0, 0.0 );        
         glEnd();
-        
-        /* restore the model matrix stack, and switch back to the matrix
-        mode we were in. */
-        // glPopMatrix();
-        // glMatrixMode( savemode );
-
-        // double x1 = x, y1 = y, z1 = z, x2 = x1 + 3, y2 = y + 3, z2 = z, x3 = x, y3 = y+3, z3=z;
-        // double a, b, c, d, e, f;
-        
-        // /* the normal to the triangle is the cross product of two of its edges. */
-        // a = x2-x1;
-        // b = y2-y1;
-        // c = z2-z1;
-        
-        // d = x3-x1;
-        // e = y3-y1;
-        // f = z3-z1;
-
-        // glBegin(GL_LINE_LOOP  ); // GL_TRIANGLES
-        // glNormal3d( b*f - c*e, c*d - a*f, a*e - b*d );
-        // glVertex3d( x1, y1, z1 );
-        // glVertex3d( x2, y2, z2 );
-        // glVertex3d( x3, y3, z3 );
-        // glEnd();
     }
 }
 
@@ -701,7 +664,67 @@ void drawDiamond(double x, double y, double z, double rx, double ry, double rz) 
     drawTriangle(x, y, z-rz, x+rx, y, z, x, y-ry, z);
 }
 
+void drawTextureSphere(double r)
+{
+    ModelerDrawState *mds = ModelerDrawState::Instance();
 
+    _setupOpenGl();
+
+    unsigned char* data;
+    int width, height;
+
+    data = readBMP("face1.bmp", width, height);
+    if (data == NULL) {
+        cout << "no texture" << endl;
+    }
+
+    GLuint textureID;
+
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
+    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL); //MODULATE
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    gluBuild2DMipmaps(GL_TEXTURE_2D, 3, width, height, GL_RGB, GL_UNSIGNED_BYTE, data);
+    glEnable(GL_TEXTURE_2D);
+    
+    if (mds->m_rayFile)
+    {
+        _dump_current_modelview();
+        fprintf(mds->m_rayFile, "scale(%f,%f,%f,sphere {\n", r, r, r );
+        _dump_current_material();
+        fprintf(mds->m_rayFile, "}))\n" );
+    }
+    else
+    {
+        int divisions; 
+        GLUquadricObj* gluq;
+        
+        switch(mds->m_quality)
+        {
+        case HIGH: 
+            divisions = 32; break;
+        case MEDIUM: 
+            divisions = 20; break;
+        case LOW:
+            divisions = 12; break;
+        case POOR:
+            divisions = 8; break;
+        }
+        
+        gluq = gluNewQuadric();
+        gluQuadricDrawStyle( gluq, GLU_FILL );
+        gluQuadricTexture( gluq, GL_TRUE );
+        gluSphere(gluq, r, divisions, divisions);
+        gluDeleteQuadric( gluq );
+
+        glDisable(GL_TEXTURE_GEN_S);
+        glDisable(GL_TEXTURE_GEN_T);
+        glDisable(GL_TEXTURE_2D);
+    }
+}
 
 
 

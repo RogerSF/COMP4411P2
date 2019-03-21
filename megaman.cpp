@@ -29,6 +29,7 @@ public:
 	void addCustomLighting();
 	void animateStep();
 	void setMegamanColor(int type, bool light);
+	void drawFace();
 
 private:
 	const int animationTotalFrame = 120;
@@ -115,10 +116,11 @@ void MegamanModel::draw()
 			glRotated(VAL(HEAD_TILT), 0, 0, 1);
 			glTranslated(0, 1.5, 0.2);
 			drawSphere(2.4);
+			// drawFace();
 
 			setDiffuseColor(COLOR_GOLD);
 			drawDiamond(0, 4.5, 0, 1, 1, 1);
-			drawTorus(0, 4.5, 0, 2, 2.5);
+			drawTorus(0, 4.5, 0, 1.5, 2);
 
 				// MEGAMAN: HELMET TOP
 				setMegamanColor(megamanType, false);
@@ -166,7 +168,7 @@ void MegamanModel::draw()
 				glPushMatrix();
 				glTranslated(-0.35, 1, 2.15);
 				glRotated(21, -1, 0, 0);
-				drawBox(0.7, 0.7, 0.2);
+				drawTextureBox(0.7, 0.7, 0.2);
 				glPopMatrix();
 
 			glPopMatrix();
@@ -412,9 +414,51 @@ void MegamanModel::addCustomLighting()
 	//reference cube to show the position of light
 	glPushMatrix();
 	glTranslated(lightPos[0], lightPos[1], lightPos[2]);
-	setDiffuseColor(1.0, 1.0, 0.0);
+	
 	drawTextureBox(0.5, 0.5, 0.5);
+	setDiffuseColor(1.0, 1.0, 0.0);
+		glBegin( GL_LINES );  
+        glVertex3d( -0.1, 0, 0 );
+        glVertex3d( -1.7, 0, 0 );     
+        glVertex3d( -0.1, 0, 0 );
+        glVertex3d( -1.7, 0.5, 0 );
+        glVertex3d( -0.1, 0, 0 );
+        glVertex3d( -1.7, -0.5, 0 );
+        glVertex3d( -0.1, 0, 0 );
+        glVertex3d( -1.7, 0, 0.5 );
+        glVertex3d( -0.1, 0, 0 );
+        glVertex3d( -1.7, 0, -0.5 );       
+        glEnd();
+
+
 	glPopMatrix();
+}
+
+void MegamanModel::drawFace() {
+	setDiffuseColor(0,0,0);
+	glBegin( GL_LINE_STRIP );  
+        glVertex3d(-1.1, -1.1, 2.05 );
+        glVertex3d(-0.9, -1.35, 1.88 );
+        glVertex3d(-0.45, -1.55, 1.84 );
+        glVertex3d(0.1, -1.8, 1.8);  
+        glVertex3d(0.45, -1.55, 1.84 );   
+        glVertex3d(0.9, -1.35, 1.88 );
+       
+        glVertex3d(1.1, -1.1, 2.05 );
+        // glVertex3d( -0.1, 0, 0 );
+        // glVertex3d( -1.7, 0.5, 0 );
+        // glVertex3d( -0.1, 0, 0 );
+        // glVertex3d( -1.7, -0.5, 0 );
+        // glVertex3d( -0.1, 0, 0 );
+        // glVertex3d( -1.7, 0, 0.5 );
+        // glVertex3d( -0.1, 0, 0 );
+        // glVertex3d( -1.7, 0, -0.5 );       
+        glEnd();
+
+        glBegin( GL_LINE_STRIP );  
+        glVertex3d(0, -0.2, 2.4 );   
+        glVertex3d(0, -0.4, 2.36 );
+        glEnd();
 }
 
 int main()

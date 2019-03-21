@@ -104,4 +104,7 @@ void drawTorus(double x, double y, double z, double r1, double r2);
 
 // Diamond drawing using triangles - Bell 2.0
 void drawDiamond(double x, double y, double z, double rx, double ry, double rz);
+
+// Draw a textured sphere of radius r
+void drawTextureSphere(double r);
 #endif

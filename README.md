@@ -25,11 +25,11 @@ One bell is worth two whistles.
 
 - [ ] :notes: Allow for adjustable levels of detail for your character. You will need to add a UI control for this.
 
-- [ ] :notes: Come up with another whistle and implement it.  A whistle is something that extends the use of one of the things you are already doing.  It is part of the basic model construction, but extended or cloned and modified in an interesting way.
+- [X] :notes: Come up with another whistle and implement it.  A whistle is something that extends the use of one of the things you are already doing.  It is part of the basic model construction, but extended or cloned and modified in an interesting way.
 
 - [X] :bell: Use a texture map on all or part of your character. (The safest way to do this is to implement your own primitives inside your model file that do texture mapping.)
 
-- [ ] :bell: Build a complex shape as a set of polygonal faces, using the "triangle" primitive to render them.
+- [X] :bell: Build a complex shape as a set of polygonal faces, using the "triangle" primitive to render them.
 
 - [X] :bell: Make an additional "animated" sequence your character can perform.  Although you can try to use a timed callback "add_idle" (see here for more information), an easier solution is just to increment values each time your model's draw() function is called. If you use the menu option to turn on animation, your draw() function will be executed at around 30 times per second.
 

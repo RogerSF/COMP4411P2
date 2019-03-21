@@ -1,14 +1,14 @@
 ﻿  megaman.cpp
-c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(96): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(392): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(393): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(97): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
 c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(394): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(395): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(396): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(397): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(407): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
-c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(408): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(398): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(399): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(409): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(410): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
+c:\users\ruizhao\desktop\2019 final go\comp 4411\projects\02 modeler\01 versions\comp4411p2\megaman.cpp(411): warning C4244: '=': conversion from 'double' to 'GLfloat', possible loss of data
 fltk.lib(case.obj) : warning LNK4204: 'C:\Users\ruizhao\Desktop\2019 Final Go\COMP 4411\Projects\02 Modeler\01 Versions\COMP4411P2\Release\vc140.pdb' is missing debugging information for referencing module; linking object as if no debug info
 fltk.lib(filename_absolute.obj) : warning LNK4204: 'C:\Users\ruizhao\Desktop\2019 Final Go\COMP 4411\Projects\02 Modeler\01 Versions\COMP4411P2\Release\vc140.pdb' is missing debugging information for referencing module; linking object as if no debug info
 fltk.lib(filename_expand.obj) : warning LNK4204: 'C:\Users\ruizhao\Desktop\2019 Final Go\COMP 4411\Projects\02 Modeler\01 Versions\COMP4411P2\Release\vc140.pdb' is missing debugging information for referencing module; linking object as if no debug info
