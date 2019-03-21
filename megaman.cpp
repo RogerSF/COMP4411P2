@@ -118,9 +118,12 @@ void MegamanModel::draw()
 			drawSphere(2.4);
 			// drawFace();
 
-			setDiffuseColor(COLOR_GOLD);
-			drawDiamond(0, 4.5, 0, 1, 1, 1);
-			drawTorus(0, 4.5, 0, 1.5, 2);
+			if(megamanType == 1) {
+				// Draw torus and diamond when megaman type is fireman
+				setDiffuseColor(COLOR_GOLD);
+				drawDiamond(0, 4.5, 0, 1, 1, 1);
+				drawTorus(0, 4.5, 0, 1.5, 2);
+			}
 
 				// MEGAMAN: HELMET TOP
 				setMegamanColor(megamanType, false);
