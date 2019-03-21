@@ -323,7 +323,6 @@ void drawTextureBox( double x, double y, double z )
         if (data == NULL) {
             cout << "no texture" << endl;
         }
-        cout<<width<<", "<<height<<endl;
 
         GLuint textureID;
 

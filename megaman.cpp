@@ -182,20 +182,50 @@ void MegamanModel::draw()
 			glRotated(rightArmSideFlex, 1, 0, 0);
 			drawCylinder(3, 1, 1);
 
-				// MEGAMAN: RIGHT FORE ARM
-				setMegamanColor(megamanType, false);
-				glPushMatrix();
-				glTranslated(0, 0, 3);
-				glRotated(rightForearmFlex, 0, 1, 0);
-				drawCylinder(3, 1.2, 1.2);
-
-					// MEGAMAN: RIGHT HAND
+			switch (megamanType) {
+				default:
+				case 0:
+					// MEGAMAN: RIGHT FORE ARM
+					setMegamanColor(megamanType, false);
 					glPushMatrix();
 					glTranslated(0, 0, 3);
-					drawSphere(1);
-					glPopMatrix();
+					glRotated(rightForearmFlex, 0, 1, 0);
+					drawCylinder(3, 1.2, 1.2);
 
-				glPopMatrix();
+						// MEGAMAN: RIGHT HAND
+						glPushMatrix();
+						glTranslated(0, 0, 3);
+						drawSphere(1);
+						glPopMatrix();
+
+					glPopMatrix();
+					break;
+				case 1:
+					// FIREMAN: LEFT FORE ARM
+					setMegamanColor(megamanType, false);
+					glPushMatrix();
+					glTranslated(0, 0, 3);
+					glRotated(leftForearmFlex, 0, -1, 0);
+					drawCylinder(2.5, 1.2, 1.8);
+
+						// FIREMAN: LEFT HAND CANNON
+						glPushMatrix();
+						glTranslated(0, 0, 2.5);
+						glRotated(90, 1, 0, 0);
+						drawTorus(0, 0, 0, 1, 1.5);
+						glRotated(-90, 1, 0, 0);
+
+							setDiffuseColor(MEGAMAN_RED);
+							glPushMatrix();
+							glTranslated(0, 0, -0.5);
+							drawCylinder(0.55, 0.4, 0.4);
+							glPopMatrix();
+
+						glPopMatrix();
+
+					glPopMatrix();
+					break;
+				}
 				
 			glPopMatrix();
 
@@ -208,26 +238,54 @@ void MegamanModel::draw()
 			glRotated(leftArmSideFlex, 1, 0, 0);
 			drawCylinder(3, 1, 1);
 
-				// MEGAMAN: LEFT FORE ARM
-				setMegamanColor(megamanType, false);
-				glPushMatrix();
-				glTranslated(0, 0, 3);
-				glRotated(leftForearmFlex, 0, -1, 0);
-				drawCylinder(2.5, 1.2, 1.5);
-
-					// MEGAMAN: LEFT HAND CANNON
-					glPushMatrix();
-					glTranslated(0, 0, 2.4);
-					drawCylinder(1, 1.4, 0.9);
-				
+				switch(megamanType){
+					default:
+					case 0:
+						// MEGAMAN: LEFT FORE ARM
+						setMegamanColor(megamanType, false);
 						glPushMatrix();
-						glTranslated(0, 0, 0.5);
-						drawCylinder(1, 0.9, 0.5);
+						glTranslated(0, 0, 3);
+						glRotated(leftForearmFlex, 0, -1, 0);
+						drawCylinder(2.5, 1.2, 1.5);
 
-							setDiffuseColor(MEGAMAN_RED);
+							// MEGAMAN: LEFT HAND CANNON
 							glPushMatrix();
-							glTranslated(0, 0, 0.5);
-							drawCylinder(0.55, 0.4, 0.4);
+							glTranslated(0, 0, 2.4);
+							drawCylinder(1, 1.4, 0.9);
+						
+								glPushMatrix();
+								glTranslated(0, 0, 0.5);
+								drawCylinder(1, 0.9, 0.5);
+
+									setDiffuseColor(MEGAMAN_RED);
+									glPushMatrix();
+									glTranslated(0, 0, 0.5);
+									drawCylinder(0.55, 0.4, 0.4);
+						break;
+					case 1:
+						// FIREMAN: LEFT FORE ARM
+						setMegamanColor(megamanType, false);
+						glPushMatrix();
+						glTranslated(0, 0, 3);
+						glRotated(leftForearmFlex, 0, -1, 0);
+						drawCylinder(2.5, 1.2, 1.8);
+							
+							// FIREMAN: LEFT HAND CANNON
+							glPushMatrix();
+							glTranslated(0, 0, 2.5);
+							glRotated(90, 1, 0, 0);
+							drawTorus(0, 0, 0, 1, 1.5);
+							glRotated(-90, 1, 0, 0);
+;
+								glPushMatrix();
+
+									setDiffuseColor(MEGAMAN_RED);
+									glPushMatrix();
+									
+									glTranslated(0, 0, -0.5);
+									drawCylinder(0.55, 0.4, 0.4);
+						break;
+				}
 
 							// Charging energy
 							if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showChargingEnergy) {
