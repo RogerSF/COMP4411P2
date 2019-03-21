@@ -107,6 +107,7 @@ void MegamanModel::draw()
 		glTranslated(-2, -2.5, -1.25);
 		drawBox(4, 5, 2.5);
 
+			if(VAL(LV_DETAIL) >= 1){
 			// MEGAMAN: HEAD
 			setDiffuseColor(MEGAMAN_SKIN);
 			glPushMatrix();
@@ -175,7 +176,9 @@ void MegamanModel::draw()
 				glPopMatrix();
 
 			glPopMatrix();
-		
+			}
+
+			
 			// MEGAMAN: RIGHT UPPER ARM
 			setMegamanColor(megamanType, true);
 			glPushMatrix();
@@ -183,53 +186,66 @@ void MegamanModel::draw()
 			glRotated(-90, 0, 1, 0);
 			glRotated(rightArmFlex, 0, 1, 0);
 			glRotated(rightArmSideFlex, 1, 0, 0);
-			drawCylinder(3, 1, 1);
+			if (VAL(LV_DETAIL) >= 1) {
+				drawCylinder(3, 1, 1);
+			}
 
+			
 			switch (megamanType) {
-				default:
-				case 0:
-					// MEGAMAN: RIGHT FORE ARM
-					setMegamanColor(megamanType, false);
-					glPushMatrix();
-					glTranslated(0, 0, 3);
-					glRotated(rightForearmFlex, 0, 1, 0);
+			default:
+			case 0:
+				// MEGAMAN: RIGHT FORE ARM
+				setMegamanColor(megamanType, false);
+				glPushMatrix();
+				glTranslated(0, 0, 3);
+				glRotated(rightForearmFlex, 0, 1, 0);
+				if (VAL(LV_DETAIL) >= 2) {
 					drawCylinder(3, 1.2, 1.2);
+				}
 
-						// MEGAMAN: RIGHT HAND
-						glPushMatrix();
-						glTranslated(0, 0, 3);
-						drawSphere(1);
-						glPopMatrix();
-
-					glPopMatrix();
-					break;
-				case 1:
-					// FIREMAN: LEFT FORE ARM
-					setMegamanColor(megamanType, false);
+					// MEGAMAN: RIGHT HAND
 					glPushMatrix();
 					glTranslated(0, 0, 3);
-					glRotated(leftForearmFlex, 0, -1, 0);
+					if (VAL(LV_DETAIL) >= 3) {
+						drawSphere(1);
+					}
+					glPopMatrix();
+
+				glPopMatrix();
+				break;
+			case 1:
+				// FIREMAN: LEFT FORE ARM
+				setMegamanColor(megamanType, false);
+				glPushMatrix();
+				glTranslated(0, 0, 3);
+				glRotated(leftForearmFlex, 0, -1, 0);
+				if (VAL(LV_DETAIL) >= 2) {
 					drawCylinder(2.5, 1.2, 1.8);
+				}
 
-						// FIREMAN: LEFT HAND CANNON
-						glPushMatrix();
-						glTranslated(0, 0, 2.5);
-						glRotated(90, 1, 0, 0);
+					// FIREMAN: LEFT HAND CANNON
+					glPushMatrix();
+					glTranslated(0, 0, 2.5);
+					glRotated(90, 1, 0, 0);
+					if (VAL(LV_DETAIL) >= 3) {
 						drawTorus(0, 0, 0, 1, 1.5);
-						glRotated(-90, 1, 0, 0);
+					}
+					glRotated(-90, 1, 0, 0);
 
-							setDiffuseColor(MEGAMAN_RED);
-							glPushMatrix();
-							glTranslated(0, 0, -0.5);
+						setDiffuseColor(MEGAMAN_RED);
+						glPushMatrix();
+						glTranslated(0, 0, -0.5);
+						if (VAL(LV_DETAIL) >= 3) {
 							drawCylinder(0.55, 0.4, 0.4);
-							glPopMatrix();
-
+						}
 						glPopMatrix();
 
 					glPopMatrix();
-					break;
-				}
-				
+
+				glPopMatrix();
+				break;
+			}
+
 			glPopMatrix();
 
 			// MEGAMAN: LEFT UPPER ARM
@@ -239,77 +255,96 @@ void MegamanModel::draw()
 			glRotated(90, 0, 1, 0);
 			glRotated(leftArmFlex, 0, -1, 0);
 			glRotated(leftArmSideFlex, 1, 0, 0);
-			drawCylinder(3, 1, 1);
+			if (VAL(LV_DETAIL) >= 1) {
+				drawCylinder(3, 1, 1);
+			}
 
-				switch(megamanType){
-					default:
-					case 0:
-						// MEGAMAN: LEFT FORE ARM
-						setMegamanColor(megamanType, false);
-						glPushMatrix();
-						glTranslated(0, 0, 3);
-						glRotated(leftForearmFlex, 0, -1, 0);
-						drawCylinder(2.5, 1.2, 1.5);
-
-							// MEGAMAN: LEFT HAND CANNON
-							glPushMatrix();
-							glTranslated(0, 0, 2.4);
-							drawCylinder(1, 1.4, 0.9);
-						
-								glPushMatrix();
-								glTranslated(0, 0, 0.5);
-								drawCylinder(1, 0.9, 0.5);
-
-									setDiffuseColor(MEGAMAN_RED);
-									glPushMatrix();
-									glTranslated(0, 0, 0.5);
-									drawCylinder(0.55, 0.4, 0.4);
-						break;
-					case 1:
-						// FIREMAN: LEFT FORE ARM
-						setMegamanColor(megamanType, false);
-						glPushMatrix();
-						glTranslated(0, 0, 3);
-						glRotated(leftForearmFlex, 0, -1, 0);
-						drawCylinder(2.5, 1.2, 1.8);
-							
-							// FIREMAN: LEFT HAND CANNON
-							glPushMatrix();
-							glTranslated(0, 0, 2.5);
-							glRotated(90, 1, 0, 0);
-							drawTorus(0, 0, 0, 1, 1.5);
-							glRotated(-90, 1, 0, 0);
-;
-								glPushMatrix();
-
-									setDiffuseColor(MEGAMAN_RED);
-									glPushMatrix();
-									
-									glTranslated(0, 0, -0.5);
-									drawCylinder(0.55, 0.4, 0.4);
-						break;
+			switch (megamanType) {
+			default:
+			case 0:
+				// MEGAMAN: LEFT FORE ARM
+				setMegamanColor(megamanType, false);
+				glPushMatrix();
+				glTranslated(0, 0, 3);
+				glRotated(leftForearmFlex, 0, -1, 0);
+				if (VAL(LV_DETAIL) >= 2) {
+					drawCylinder(2.5, 1.2, 1.5);
 				}
 
-							// Charging energy
-							if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showChargingEnergy) {
-								
-								for (int i = 0; i < 30; i++)
+						// MEGAMAN: LEFT HAND CANNON
+						glPushMatrix();
+						glTranslated(0, 0, 2.4);
+						if (VAL(LV_DETAIL) >= 3) {
+							drawCylinder(1, 1.4, 0.9);
+						}
+
+							glPushMatrix();
+							glTranslated(0, 0, 0.5);
+							if (VAL(LV_DETAIL) >= 3) {
+								drawCylinder(1, 0.9, 0.5);
+							}
+
+								setDiffuseColor(MEGAMAN_RED);
+								glPushMatrix();
+								glTranslated(0, 0, 0.5);
+								if (VAL(LV_DETAIL) >= 3) {
+									drawCylinder(0.55, 0.4, 0.4);
+								}
+				break;
+			case 1:
+				// FIREMAN: LEFT FORE ARM
+				setMegamanColor(megamanType, false);
+				glPushMatrix();
+				glTranslated(0, 0, 3);
+				glRotated(leftForearmFlex, 0, -1, 0);
+				if (VAL(LV_DETAIL) >= 2) {
+					drawCylinder(2.5, 1.2, 1.8);
+				}
+
+						// FIREMAN: LEFT HAND CANNON
+						glPushMatrix();
+						glTranslated(0, 0, 2.5);
+						glRotated(90, 1, 0, 0);
+						if (VAL(LV_DETAIL) >= 3) {
+							drawTorus(0, 0, 0, 1, 1.5);
+						}
+						glRotated(-90, 1, 0, 0);
+							;
+							glPushMatrix();
+
+								setDiffuseColor(MEGAMAN_RED);
+								glPushMatrix();
+								glTranslated(0, 0, -0.5);
+								if (VAL(LV_DETAIL) >= 3) {
+									drawCylinder(0.55, 0.4, 0.4);
+								}
+				break;
+			}
+
+
+							if (VAL(LV_DETAIL) >= 3) {
+								// Charging energy
+								if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showChargingEnergy) {
+
+									for (int i = 0; i < 30; i++)
+									{
+										float r = float(rand() % 20) / float(100);
+										float dx = float((rand() % 80) - 40) / float(20);
+										float dy = float((rand() % 80) - 40) / float(20);
+										float dz = float(rand() % 80) / float(20);
+										glPushMatrix();
+										glTranslated(dx*energyPathTransformFactor, dy*energyPathTransformFactor, dz*energyPathTransformFactor + 0.5);
+										drawSphere(r);
+										glPopMatrix();
+									}
+								}
+								else if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showLaser)
 								{
-									float r = float(rand() % 20) / float(100);
-									float dx = float((rand() % 80) - 40) / float(20);
-									float dy = float((rand() % 80) - 40) / float(20);
-									float dz = float(rand() % 80) / float(20);
 									glPushMatrix();
-									glTranslated(dx*energyPathTransformFactor, dy*energyPathTransformFactor, dz*energyPathTransformFactor + 0.5);
-									drawSphere(r);
+									glTranslated(0, 0, laserTransformFactor * 3);
+									drawCylinder(2, 0.2, 0.2);
 									glPopMatrix();
 								}
-							} else if (ModelerUserInterface::m_controlsAnimOnMenu->value() && this->showLaser)
-							{
-								glPushMatrix();
-								glTranslated(0, 0, laserTransformFactor*3);
-								drawCylinder(2, 0.2 ,0.2);
-								glPopMatrix();
 							}
 
 							glPopMatrix();
@@ -326,7 +361,9 @@ void MegamanModel::draw()
 			setMegamanColor(megamanType, false);
 			glPushMatrix();
 			glTranslated(-0.25, -1, -0.25);
-			drawBox(4.5, 2, 3);
+			if (VAL(LV_DETAIL) >= 1) {
+				drawBox(4.5, 2, 3);
+			}
 			glPopMatrix();
 
 			// MEGAMAN: RIGHT LEG
@@ -336,21 +373,27 @@ void MegamanModel::draw()
 			glRotated(90, 1, 0, 0);
 			glRotated(VAL(RIGHT_LEG_FLEX), -1, 0, 0);
 			glRotated(VAL(RIGHT_LEG_SIDE_FLEX), 0, -1, 0);
-			drawCylinder(2.5, 1, 1);
+			if (VAL(LV_DETAIL) >= 1) {
+				drawCylinder(2.5, 1, 1);
+			}
 
 				// MEGAMAN: RIGHT LOWER LEG
 				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0, 2.5);
 				glRotated(VAL(RIGHT_LOWER_LEG_FLEX), 1, 0, 0);
-				drawCylinder(3, 1.2, 1.5);
+				if (VAL(LV_DETAIL) >= 2) {
+					drawCylinder(3, 1.2, 1.5);
+				}
 
 					// MEGAMAN: RIGHT FOOT
 					glPushMatrix();
 					glTranslated(0, 0.2, 3);
 					glScaled(1, 1.2, 1);
 					glRotated(VAL(RIGHT_FOOT_FLEX), 1, 0, 0);
-					drawCylinder(1.5, 1.2, 1.8);
+					if (VAL(LV_DETAIL) >= 3) {
+						drawCylinder(1.5, 1.2, 1.8);
+					}
 					glPopMatrix();
 
 				glPopMatrix();
@@ -364,21 +407,27 @@ void MegamanModel::draw()
 			glRotated(90, 1, 0, 0);
 			glRotated(VAL(LEFT_LEG_FLEX), 1, 0, 0);
 			glRotated(VAL(LEFT_LEG_SIDE_FLEX), 0, 1, 0);
-			drawCylinder(2.5, 1, 1);
+			if (VAL(LV_DETAIL) >= 1) {
+				drawCylinder(2.5, 1, 1);
+			}
 
 				// MEGAMAN: LEFT LOWER LEG
 				setMegamanColor(megamanType, false);
 				glPushMatrix();
 				glTranslated(0, 0, 2.5);
 				glRotated(VAL(LEFT_LOWER_LEG_FLEX), 1, 0, 0);
-				drawCylinder(3, 1.2, 1.5);
+				if (VAL(LV_DETAIL) >= 2) {
+					drawCylinder(3, 1.2, 1.5);
+				}
 
 					// MEGAMAN: RIGHT FOOT
 					glPushMatrix();
 					glTranslated(0, 0.2, 3);
 					glScaled(1, 1.2, 1);
 					glRotated(VAL(LEFT_FOOT_FLEX), 1, 0, 0);
-					drawCylinder(1.5, 1.2, 1.8);
+					if (VAL(LV_DETAIL) >= 3) {
+						drawCylinder(1.5, 1.2, 1.8);
+					}
 					glPopMatrix();
 
 				glPopMatrix();
@@ -554,7 +603,8 @@ int main()
 	controls[LEFT_LEG_SIDE_FLEX] = ModelerControl("Left Leg Side Flex", -20, 80, 1, 0);
 	controls[LEFT_LOWER_LEG_FLEX] = ModelerControl("Left Lower Leg Flex", 0, 90, 1, 0);
 	controls[LEFT_FOOT_FLEX] = ModelerControl("Left Foot Flex", 0, 90, 1, 0);
-	controls[MEGAMAN_TYPE] = ModelerControl("Change Megaman Tyoe", 0, 1, 1, 0);
+	controls[MEGAMAN_TYPE] = ModelerControl("Change Megaman Type", 0, 1, 1, 0);
+	controls[LV_DETAIL] = ModelerControl("Level of details", 0, 3, 1, 3);
 
     ModelerApplication::Instance()->Init(&createMegamanModel, controls, NUMCONTROLS);
     return ModelerApplication::Instance()->Run();

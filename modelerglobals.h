@@ -37,7 +37,8 @@ enum SampleModelControls
 	LEFT_LOWER_LEG_FLEX,
 	LEFT_FOOT_FLEX,
 	MEGAMAN_TYPE,
-	NUMCONTROLS
+	LV_DETAIL,
+	NUMCONTROLS,
 };
 
 // Colors
