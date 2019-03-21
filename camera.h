@@ -93,4 +93,11 @@ public:
 	void lookAt(Vec3f eye, Vec3f at, Vec3f up);
 };
 
+void MakeDiagonal(Mat4f &m, float k);
+void MakeHScale(Mat4f &m, const Vec3f &s);
+void MakeHTrans(Mat4f &m, const Vec3f &s);
+void MakeHRotX(Mat4f &m, float theta);
+void MakeHRotY(Mat4f &m, float theta);
+void MakeHRotZ(Mat4f &m, float theta);
+
 #endif
