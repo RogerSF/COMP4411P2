@@ -76,6 +76,14 @@ public:
     	
     inline Vec3f getLookAt() const
     { return mLookAt; }
+
+    inline void setPosition( const Vec3f &pos )
+    {   mPosition = pos; 
+        mDirtyTransform = true;}
+        
+    inline Vec3f getPosition() const
+    { return mPosition; }
+
     
     //---[ Interactive Adjustment ]------------------------
     // these should be used from a mouse event handling routine that calls

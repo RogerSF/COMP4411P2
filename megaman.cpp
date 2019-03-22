@@ -15,6 +15,7 @@
 #define MEGAMAN_SKIN 1.0f, 0.8667f, 0.7647f
 
 #define FIREMAN_LIGHT 0.588f, 0.592f, 0.5608f
+
 #define FIREMAN_DARK 0.9294f, 0.2627f, 0.15686f
 
 // To make a MegamanModel, we inherit off of ModelerView
@@ -309,7 +310,7 @@ void MegamanModel::draw()
 							drawTorus(0, 0, 0, 1, 1.5);
 						}
 						glRotated(-90, 1, 0, 0);
-							;
+							
 							glPushMatrix();
 
 								setDiffuseColor(MEGAMAN_RED);
@@ -509,7 +510,6 @@ void MegamanModel::animateStep()
 		leftForearmFlex = VAL(LEFT_FOREARM_FLEX);
 	}
 }
-
 
 void MegamanModel::addCustomLighting()
 {

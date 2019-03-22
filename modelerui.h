@@ -14,6 +14,8 @@
 #include <FL/Fl_Scroll.H>
 #include <FL/Fl_Pack.H>
 #include "modelerapp.h"
+#include "modelerglobals.h"
+
 
 class ModelerUserInterface {
 public:
@@ -56,16 +58,21 @@ private:
 private:
   inline void cb_Focus_i(Fl_Menu_*, void*);
   static void cb_Focus(Fl_Menu_*, void*);
+  // inline void cb_Frame_i(Fl_Menu_*, void*);
+  // static void cb_Frame(Fl_Menu_*, void*);
+
 public:
   static Fl_Menu_Item *m_controlsAnimOnMenu;
 private:
   inline void cb_m_controlsAnimOnMenu_i(Fl_Menu_*, void*);
   static void cb_m_controlsAnimOnMenu(Fl_Menu_*, void*);
+
 public:
   Fl_Browser *m_controlsBrowser;
 private:
   inline void cb_m_controlsBrowser_i(Fl_Browser*, void*);
   static void cb_m_controlsBrowser(Fl_Browser*, void*);
+  
 public:
   Fl_Scroll *m_controlsScroll;
   Fl_Pack *m_controlsPack;
