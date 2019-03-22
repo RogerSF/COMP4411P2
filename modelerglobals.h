@@ -38,10 +38,6 @@ enum SampleModelControls
 	LEFT_FOOT_FLEX,
 	MEGAMAN_TYPE,
 	LV_DETAIL,
-	IK_ENABLE,
-	IK_X,
-	IK_Y,
-	IK_Z,
 	NUMCONTROLS,
 };
 
