@@ -7,6 +7,11 @@
 #include <math.h>
 #include "modelerglobals.h"
 #include "modelerui.h"
+#include "vec.h"
+#include "camera.h"
+#include <gl/glu.h>
+#include <complex>
+#include <algorithm>
 
 // Colors
 #define MEGAMAN_LIGHT 0.455f, 0.7255f, 0.855f
@@ -31,6 +36,7 @@ public:
 	void animateStep();
 	void setMegamanColor(int type, bool light);
 	void drawFace();
+	void updateRightArmIK(Vec3f arm);
 
 private:
 	const int animationTotalFrame = 120;
@@ -96,6 +102,8 @@ void MegamanModel::draw()
 	this->animateStep();
 
 	int megamanType = VAL(MEGAMAN_TYPE);
+
+	updateRightArmIK(Vec3f(-2, 1.5, 0));
 
 	// draw the sample model
 	setDiffuseColor(COLOR_GREEN);
@@ -571,6 +579,65 @@ void MegamanModel::drawFace() {
         glEnd();
 }
 
+void MegamanModel::updateRightArmIK(Vec3f arm)
+{
+	// Translate and rotate the arm vector to find the joint vector
+	Mat4f armRotateY, armRotateZ;
+	MakeHRotY(armRotateY, VAL(RIGHT_ARM_FLEX) * M_PI / 180);
+	MakeHRotZ(armRotateZ, VAL(RIGHT_ARM_SIDE_FLEX) * M_PI / 180);
+	Vec3f joint = armRotateY * armRotateZ * Vec3f(-3, 0, 0) + arm;
+
+	Mat4f forearmRotateY;
+	MakeHRotY(forearmRotateY, VAL(RIGHT_FOREARM_FLEX) * M_PI / 180);
+	Vec3f forearmEndpoint = armRotateY * armRotateZ * forearmRotateY * Vec3f(-3, 0, 0) + joint; // Angle * Length of body part + point of rotation
+
+	glPushMatrix();
+	setDiffuseColor(MEGAMAN_RED);
+	glTranslated(forearmEndpoint[0], forearmEndpoint[1], forearmEndpoint[2]);
+	drawSphere(0.5);
+	glPopMatrix();
+
+	Vec3f ikTarget(VAL(IK_X), VAL(IK_Y), VAL(IK_Z));
+	glPushMatrix();
+	setDiffuseColor(MEGAMAN_RED);
+	glTranslated(ikTarget[0], ikTarget[1], ikTarget[2]);
+	drawSphere(0.5);
+	glPopMatrix();
+
+	// Transform the target relative to joint's local coordinate
+	Mat4f mTrans, mRota;
+	Vec3f vTrans(-joint[0], -joint[1], -joint[2]);
+	MakeHTrans(mTrans, vTrans);
+	ikTarget = mTrans * ikTarget;
+	float angle = atanf(ikTarget[2] / ikTarget[1]);
+	MakeHRotX(mRota, angle);
+	ikTarget = mRota * ikTarget;
+
+	float distance = hypot(hypot(ikTarget[0] - joint[0], ikTarget[1] - joint[1]), ikTarget[2] - joint[2]);
+
+	float shiftAngleY = (atan2f(sqrt(pow(ikTarget[2], 2) + pow(ikTarget[0], 2)) ,ikTarget[1]) - 
+		atan2f(sqrt(pow(forearmEndpoint[2], 2) + pow(forearmEndpoint[0], 2)), forearmEndpoint[1])) * 180.0 / M_PI;
+
+	cout << "distance: " << distance << endl;
+	cout << "angle Y: " << shiftAngleY << endl;
+	cout << "target angle: " << atan2f(sqrt(pow(ikTarget[2], 2) + pow(ikTarget[0], 2)), ikTarget[1]) << endl;
+	cout << "forearmAngle: " << atan2f(sqrt(pow(forearmEndpoint[2], 2) + pow(forearmEndpoint[0], 2)), forearmEndpoint[1]) << endl;
+
+
+	float finalForearmAngle = VAL(RIGHT_FOREARM_FLEX) - shiftAngleY;
+
+	if(finalForearmAngle < 0)
+	{
+		finalForearmAngle = 0;
+	} else if (finalForearmAngle > 170)
+	{
+		finalForearmAngle = 170;
+	}
+
+	ModelerApplication::Instance()->SetControlValue(RIGHT_FOREARM_FLEX, finalForearmAngle);
+}
+
+
 int main()
 {
 	// Initialize the controls
@@ -591,10 +658,10 @@ int main()
 	controls[HEAD_TILT] = ModelerControl("Head Tilt", -45, 45, 1, 0);
 	controls[RIGHT_ARM_FLEX] = ModelerControl("Right Arm Flex", -30, 90, 1, 0);
 	controls[RIGHT_ARM_SIDE_FLEX] = ModelerControl("Right Arm Side Flex", -30, 90, 1, 80);
-	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Forearm Flex", 0, 90, 1, 0);
+	controls[RIGHT_FOREARM_FLEX] = ModelerControl("Right Forearm Flex", 0, 170, 1, 0);
 	controls[LEFT_ARM_FLEX] = ModelerControl("Left Arm Flex", -30, 90, 1, 0);
 	controls[LEFT_ARM_SIDE_FLEX] = ModelerControl("Left Arm Side Flex", -30, 90, 1, 80);
-	controls[LEFT_FOREARM_FLEX] = ModelerControl("Left Fore Arm Flex", 0, 90, 1, 0);
+	controls[LEFT_FOREARM_FLEX] = ModelerControl("Left Fore Arm Flex", 0, 170, 1, 0);
 	controls[RIGHT_LEG_FLEX] = ModelerControl("Right Leg Flex", -45, 45, 1, 0);
 	controls[RIGHT_LEG_SIDE_FLEX] = ModelerControl("Right Leg Side Flex", -20, 80, 1, 0);
 	controls[RIGHT_LOWER_LEG_FLEX] = ModelerControl("Right Lower Leg Flex", 0, 90, 1, 0);
@@ -605,6 +672,10 @@ int main()
 	controls[LEFT_FOOT_FLEX] = ModelerControl("Left Foot Flex", 0, 90, 1, 0);
 	controls[MEGAMAN_TYPE] = ModelerControl("Change Megaman Type", 0, 1, 1, 0);
 	controls[LV_DETAIL] = ModelerControl("Level of details", 0, 3, 1, 3);
+	controls[IK_ENABLE] = ModelerControl("Enable IK", 0, 1, 1, 0);
+	controls[IK_X] = ModelerControl("IK Target X", -10, 10, 0.01, 5);
+	controls[IK_Y] = ModelerControl("IK Target Y", -10, 10, 0.01, 3);
+	controls[IK_Z] = ModelerControl("IK Target Z", -10, 10, 0.01, 3);
 
     ModelerApplication::Instance()->Init(&createMegamanModel, controls, NUMCONTROLS);
     return ModelerApplication::Instance()->Run();
